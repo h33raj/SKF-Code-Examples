@@ -50,5 +50,5 @@ SQL query
 	"""
 	#Retrieve the user with username
 	admin = User.query.filter_by(username='admin').first()
-	admin.password
+	admin.id
 
