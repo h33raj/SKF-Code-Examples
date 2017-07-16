@@ -22,4 +22,4 @@ input validation
 	    if match:
 	        return True
 	    else:
-	        raise Exception("User supplied value not in the range " + range)
+	        raise False

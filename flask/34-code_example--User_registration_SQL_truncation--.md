@@ -60,5 +60,5 @@
         password = passwordHash(request.form['inputPassword'])
         userRegister(request.form['inputName'], password, request.form['inputEmail'], 3, "Active")
         flash('User successfully registered')
-        return render_template('home.html', user=request.form['inputName'])
+        return redirect(url_for('login'))        
         
