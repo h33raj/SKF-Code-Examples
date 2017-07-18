@@ -19,7 +19,7 @@
     	|name  	 |	|sesionID|	|Token    |	 |address	    |
     	----------	----------  |sessionID|  |sessionID   	|
     						    |Verified |  |consumerToken |
-    							 ----------	 ----------------		
+    							-----------	 ----------------		
 
     	As you can see above we have a very simplified database structure for your average
     	webshop. Now we can walk through the different steps needed to enforce the user to take
@@ -37,8 +37,14 @@
 
     """
 
-    	//First we build the checktokens function because we want to check the checkout tokens
-    	//multiple times throughout the steps
+    def checkTokens():
+
+        # First we build the checktokens function because we want to check the checkout tokens
+        # multiple times throughout the steps
+    
+        rows = checkout.query.filter_by(sessionID=session['id']).all()
+        for x in rows:
+            if x.token == x.
     	function checkTokens(){
     		$stmt = $db->prepare("SELECT * from checkout where sessionID=? ");
     		$stmt->execute(array(session_id()));
