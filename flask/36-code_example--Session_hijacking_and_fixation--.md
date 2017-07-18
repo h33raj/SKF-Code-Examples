@@ -11,7 +11,7 @@
 
     	TABLE track_sessions
     	---------------------------------------------------------------------------------
-    	| TrackID | userID |		   	   SESSION 		                |     Ip adress	|
+    	| TrackID | userID |		   	   SESSION 		            |     Ip adress	    |
     	---------------------------------------------------------------------------------
     	|   1     | 1      | 	79dcd529c0f5e01a9bfb2425c52036c6    |	123.45.67.89	|   
     	---------------------------------------------------------------------------------
@@ -74,87 +74,60 @@
     	On login we change the session id in order to prevent session fixation
     	(see "Login functionality" in the code examples for more details about implementation)
     """
-    session_regenerate_id(true);
+    
+    # In header we should include this
+    from flask_kvsession import KVSessionExtension
+    
+    # Call for session regenerate to prevent session fixation
+    session.regenerate()
 
-    	/*
+    """
     	NOTE: On applications that require high level security, there should never be an
     	remember me functionality implemented.
-    	*/
+    """
 
 
-    	/*
+    """
     	Now imagine the scenario after the login of the user (see the "login functionality" in
     	the code examples for more details). Whenever the user is logged in, the users IP address
     	and session id are also stored in the database these values are used in order to verify
     	if there are multiple users active on the same session.
     	If so, we can let the user decide to terminate the session and terminate the
     	other assigned sessions.
-    	*/
-    	class sessionCheck{
-    		 //We implement this logic into our checksession functionality
-    		 public function _checkSession(){
+    """
 
-    			//init a DB connection
-    			include("classes.php");
-    			$con = new database();
-    			$db = $con ->connection()
+    def checkSession():
+    #To check whether the user is active
+    if session['status'] != "active" or session['status'] == "":
+        return redirect(url_for('login'))
 
-    			//Here we check for a valid session to see if the user is authenticated
-    			session_start();
-    			if(($_SESSION['access'] != "active") || $_SESSION['access'] == ""){
-    				header("Location: /login");
+    """
+        Then we start the rest of the function where we will check if there are multiple
+        users/IP addresses using the same session id
+    """
+    
+    # Store the current session
+    session = request.cookies.get('session')
 
-    				/*
-    				this statement ABSOLUTELY MUST DIE or else an attacker could gain knowledge and abuse
-    				all your pages and functionality simply by intercepting the response
-    				from the server when connection to your pages.
-    				*/
+    # Get user ip address
+    ipaddress = request.remote_addr
 
-    				die();
-    			}
+    trackSession = track_sessions.query.filter_by(ipaddress = ipaddress).first()
+    if trackSession.session == ipaddress:
+        return """<div style='border-style:solid; border-color:black; color:white; background-color:red; float:left;'>
+                <p>There are other active sessions on other IP-addresses.<br/>
+                Your session could be hijacked press logout in order to authenticate again
+                for security reasons!
+                <br/><br/>
+                <a href='/logout'>Terminate sessions</a>
+                <br/>
+                <a href='/Proceed'>Proceed anyway</a>
+                </p>
+                </div>"""
 
-    			/*
-    			Then we start the rest of the function where we will check if there are multiple
-    			users/IP addresses using the same session id
-    			*/
-
-    			//store current session id
-    			$session  = session_id();
-
-    			//get users ip address
-    			$ipaddress = $_SERVER['REMOTE_ADDR'];
-
-    			$stmt = $db->prepare("SELECT * FROM track_sessions WHERE userID=:id");
-    			$stmt->execute(array(':id' => $_SESSION['userID']));
-    			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    				foreach($rows as $row){
-
-    					//check to see if the current ip address matches the one stored in login if not warn user!
-    					if(($ipaddress != $row['ipaddress']) && $row['SESSION'] != $session){
-
-    						echo "
-    						<div style='border-style:solid; border-color:black; color:white; background-color:red; float:left;'>
-    						<p>There are other active sessions on other IP-addresses.<br/>
-    						Your session could be hijacked press logout in order to authenticate again
-    						for security reasons!
-    						<br/><br/>
-    						<a href='/logout'>Terminate sessions</a>
-    						<br/>
-    						<a href='/Proceed'>Proceed anyway</a>
-    						</p>
-    						</div>
-    						";				
-    				}
-    			}			
-    		}
-    	}
-
-    	/*
-    	the only thing left to do now is to update your track_sessions table by inserting
-    	the IP address, sessionID and userID if you want to accept the other sessions as valid.
-    	Otherwise the user just has to terminate his current session in order to lock out the
-    	other sessions.
-    	*/
-
-    ?>
+    """
+    The only thing left to do now is to update your track_sessions table by inserting
+    the IP address, sessionID and userID if you want to accept the other sessions as valid.
+    Otherwise the user just has to terminate his current session in order to lock out the
+    other sessions.
+    """
