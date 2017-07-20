@@ -35,25 +35,31 @@
     	----------------------------------
     	*/
 
-    	def countAccess(count):
+def countAccess(count):
             """
             Everytime the user accesses the database we keep track of the number of times he
             connected. Whenever the user passes a reasonable number he should be rejected
             since he could be an attacker scraping your table contents and stealing company information
             You could a CRON job in your mysql system in order to clean the Aggregate column within certain timeframes
             """
+            
             setLog(session['id'], "User access database ", "SUCCESS", datetime.utcnow(), "NULL")
             registered_user = User.query.filter_by(id=session['id']).first()
+            
             # We add the count to control variable for the update
             control = registered_user.AggregateControl + count
+            
             # Check the aggregate
             if control > 5000:
                 setLog(session['id'], "Aggregate control breach", "FAIL", date("d-m-y"), "HIGH")
+                
                 """
                 Then we lock out the users account assuming it has been compromised by
                 an attacker
                 """
+                
                 access = "Fail"
                 registered_user.status = access
+            
             #we update the users table and count +1 tot the AggregateControl column
             registered_user.AggregateControl = control
