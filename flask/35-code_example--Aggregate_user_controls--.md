@@ -3,24 +3,24 @@
 
 ## Example:
 
-    <?php
+ 
 
-    	"""
+    """
     	In order to enforce Aggregate access control protection the best method would be to
     	define your rules by means of a database structure rather than sessions or log's.
     	This is due to the fact that if the user drops his session the rating would start
     	al over again.
-        """
+    """
 
     	TABLE users
     	---------------------------------------------------------------------------------   
     	| userID | userName | password | privilegeID |    access    | AggregateControl	|
     	---------------------------------------------------------------------------------  
-    	|   1    | Admin    | Csdar323 |      1      |     TRUE     |		2322	        	|
+    	|   1    | Admin    | Csdar323 |      1      |     TRUE     |		2322	    |
     	---------------------------------------------------------------------------------   
-    	|   2    | User     | Adf4fsv  |      2      |     FALSE    |	  0               |
+    	|   2    | User     | Adf4fsv  |      2      |     FALSE    |	  0             |
     	---------------------------------------------------------------------------------  
-    	|   3    | Guest    | dff4fKr  |      3      |     TRUE     |	  125             |
+    	|   3    | Guest    | dff4fKr  |      3      |     TRUE     |	  125           |
     	---------------------------------------------------------------------------------
 
     	TABLE privileges
