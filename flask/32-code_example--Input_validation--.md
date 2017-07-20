@@ -11,15 +11,18 @@ input validation
 	certain input validation roles and reduces the chance of mistakes in your regexes.
 	"""
 
-	def inputValidation(type, value):
+	def inputValidation(input, type, logMessage, threatLevel, countLevel):
 	    switcher = {
 	        "alphanumeric": "^[a-zA-Z0-9]+$",
 	        "nummeric": "^[0-9]*$",
 	        "bool": "^(true|false)$"
 	    }
 	    pattern = switcher.get(type, "nothing")
-	    match = re.findall(pattern, value)
+	    match = re.findall(pattern, input)
 	    if match:
+	    	setLog(session["id"], "Regex matched", "Success", str(datetime.utcnow()), session['privilege'])
 	        return True
 	    else:
+	    	setLog(session["id"], logMessage, "FAIL", str(datetime.utcnow()), session['privilege'])
+	    	counter.increment()
 	        raise False

@@ -9,7 +9,7 @@
         checkpattern("value1,value2,value3" , $input, "3")
     """
 
-    def whitelisting(allowed, input, count):
+    def whitelisting(allowed, input):
         result = allowed.split(',')
         flag = False
         for x in result:
@@ -24,4 +24,4 @@
             if flag == False:
                 setLog(session["id"], "Bad whitelist validation", "FAIL", datetime.utcnow(), "HIGH")            
                 counter.increment()
-                return False  
+                return False    
