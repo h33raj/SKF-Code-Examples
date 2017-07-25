@@ -15,7 +15,7 @@
     Options -Indexes
 
 	"""
-		Python code against directory traversal
+		Python code to display the files from the uploads folder
 	"""
 
 	@app.route('/uploads/<filename>')
