@@ -66,20 +66,28 @@
         #Login a user
         @app.route('/login', methods=['GET', 'POST'])
         def login():
+            
+            # Redirect to login page in GET request
             if request.method == 'GET':
                 return render_template('login.html')
+            
+            # Intialising username and password
             username = request.form['inputName']
             password = request.form['inputPassword']
-            #Check whether the username is alphanumeric
+
+            # Check whether the username is alphanumeric
             if inputValidation('alphanumeric', username) != True:
                 setLog(0, "invalid expected input", "FAIL", str(datetime.utcnow()), "HIGH")
                 return redirect(url_for('login'))
+
+            # Username and password check   
             registered_user = User.query.filter_by(username=username, password=password).first()
             if registered_user is None:
                 flash('Username or Password is invalid' , 'error')
                 return redirect(url_for('login'))
-            #Logged In successfully
+
+            # Logged In successfully
             login_user(registered_user)
             flash('Logged in successfully')
+            
             return render_template('home.html', user=request.form['inputName'])
-
