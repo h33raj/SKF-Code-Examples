@@ -61,6 +61,6 @@
     	+ "</form>"
 
     else:
-    	//Do operation for changing the email address
+    	# Do operation for changing the email address
     	return "<div id='success'>You can now change your email address!</div>";
 
