@@ -32,9 +32,9 @@
                 self.blocker = blocker
                 self.userID = userID
 
-            def increment(self):
-                self.count+= self.count
-                self.blocker+= self.blocker
+            def increment(self, count):
+                self.count+= count
+                self.blocker+= count
 
                 if self.counter >= 3:
                     setLog(self.userId,"The users session was terminated", "SUCCESS", datetime.utcnow(), "NULL")

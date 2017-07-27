@@ -24,5 +24,5 @@ input validation
 	        return True
 	    else:
 	    	setLog(session["id"], logMessage, "FAIL", str(datetime.utcnow()), session['privilege'])
-	    	counter.increment()
+	    	counter.increment(1)
 	        raise False
