@@ -75,16 +75,16 @@
 
     else:
 
-        # Log that the user had sufficient privileges:
-        setLog(session['id'], "User was not privileged!", "FAIL", str(datetime.utcnow()), privilege, "HIGH")
+      # Log that the user had sufficient privileges:
+      setLog(session['id'], "User was not privileged!", "FAIL", str(datetime.utcnow()), privilege, "HIGH")
 
-        """
-          Set counter; if counter hits 3, the user's session must be terminated.
-          After 3 session terminations the user's account must be blocked.
-          Given the high threat level, there will be immediate session termination.
-          in this case the user tried to manipulate the application operation in order to do things he is not
-          privileged to, immediate session termination will follow!
-        """
+      """
+        Set counter; if counter hits 3, the user's session must be terminated.
+        After 3 session terminations the user's account must be blocked.
+        Given the high threat level, there will be immediate session termination.
+        in this case the user tried to manipulate the application operation in order to do things he is not
+        privileged to, immediate session termination will follow!
+      """
 
         Counter.increment(3)
 
