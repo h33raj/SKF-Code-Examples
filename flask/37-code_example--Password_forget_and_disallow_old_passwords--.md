@@ -118,57 +118,32 @@
                 detailed information)    
                 """
 
-                createHash
+                newPassword = createHash(password)
     	
-    			if($token === $_GET['resetLink']){
+                """
+                Finally we compare the password against other old passwords from the
+                password reset database in order to prevent the user from using old passwords
+                which could already be compromised by any means.
+                """
+    			
+                user = forgetPassword.query.filter_by(userID=userID).first()
 
-    				/*
-    				First we pull the password through our function which enforces the input of
-    				secure passwords.(see "Enforce secure passwords" in code examples for more
-    				detailed information)
-    				*/
+                if newPassword == user.oldPasswords:
 
-    				if($pwd->createPassword($_POST['password']) === true);
+                    return "This was an old password please do not use this password"
 
-    				/*
-    				Than we encrypt our password
-    				(see "Password storage" in code examples for more
-    				detailed information)
-    				*/
+                else:
+                    
+                    # First we update the new password for the user
+                    active = "No"
 
-    				$hash->createHash($_POST['password']);
+                    # Update the details
+                    newUser = members.query.filter_by(userID=userID).first()
+                    newUser.password = newPassword
 
-    				/*
-    				Finally we compare the password against other old passwords from the
-    				password reset database in order to prevent the user from using old passwords
-    				which could already be compromised by any means.
-    				*/
+                    db.session.commit()
 
-    				$stmt = $db->prepare("SELECT oldPasswords FROM forgetPassword where userID=?");
-    				$stmt->execute(array($userID));
-    				$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    				foreach($rows as $row){
-
-    					if($newpassword === $row['oldPasswords']){
-    						echo "This was an old password please do not use this password";
-    					}else{
-
-    						//First we update the new password for the user
-    						$active = "NO";
-    						$stmt = $db->prepare("UPDATE members SET password=? WHERE userID=?");
-    						$stmt->execute(array($newPassword, $userID));
-    						$affected_rows = $stmt->rowCount();
-
-    						//Then we destroy the reset token by setting it's value to NO
-    						$stmt = $db->prepare("UPDATE forgetPassword SET active=? WHERE userID=?");
-    						$stmt->execute(array($active, $userID));
-    						$affected_rows = $stmt->rowCount();
-
-    					}
-    				}
-    			}
-    		}
-    	}
-
-    ?>
+                    user.active = active
+                    user.userID = userID
+             
+    				db.session.commit()
