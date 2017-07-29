@@ -34,7 +34,6 @@
     		   "add to checkout" generates a random token for the added items which
     		    are inserted into the payment table in the database
 
-
     """
 
     def checkTokens():
