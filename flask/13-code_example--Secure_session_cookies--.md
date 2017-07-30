@@ -5,7 +5,8 @@ Secure session cookies
 
 
     """
-	Whenever  a cookie is sent over a secured connection, the cookie should be set
+REMARK Glenn: Please explain the HTTP Only flag also
+	Whenever a cookie is sent over a secured connection, the cookie should be set
 	with the secure flag, in order to guarantee the integrity of the data it contains.
 	"""
 
