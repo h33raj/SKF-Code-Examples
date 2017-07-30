@@ -3,6 +3,7 @@
 
 ## Example:
 
+REMARK Glenn: Indeed input validation and rejection is important and the way to go but currenctly this code is hard to understand. Can you reqrite it so it's more clear?
 
     """
         Define the allowed characters and input parameter and countlevel for the
