@@ -4,7 +4,7 @@ XML External entities
 
 **Example:**
 
-	    
+REMARK Glenn: Maybe add load_dtd=False and explain why and the impact if this is on? Also add a valid XML string in the line 18 
 
 	    ```
 	    The overall prevention method for loading external entities is adding the following line of code:
