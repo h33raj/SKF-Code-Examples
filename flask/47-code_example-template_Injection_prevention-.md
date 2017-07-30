@@ -39,14 +39,21 @@
 
 		# Escape function would fix the issue
     	url = request.url.replace("{","").replace("}","")
+    	url = escape(url)
     	
-    	template = '''{%% extends "layout.html" %%}
-		{%% block body %%}
-    	<div class="center-content error">
-        <h1>Oops! That page doesn't exist.</h1>
-    	<h3>%s</h3>
-    	</div>
-		{%% endblock %%}
-		''' % (url)
-    	return render_template_string(template), 404
+    	# Checking the url
+    	p = re.compile(r'(http://www.example.com/(.*))(\?.*)?')
+    	
+    	if p.match(url):
+
+    		template = '''{%% extends "layout.html" %%}
+			{%% block body %%}
+    		<div class="center-content error">
+        	<h1>Oops! That page doesn't exist.</h1>
+    		<h3>%s</h3>
+    		</div>
+			{%% endblock %%}
+			''' % (url)
+    		
+    		return render_template_string(template), 404
 
