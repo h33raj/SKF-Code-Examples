@@ -9,7 +9,7 @@ CSRF tokens
 
     We are using Flask-WTF, for installing that : 
     pip install -U Flask-WTF
-
+REMARK Glenn: If the SECRET_KEY is used would that have impact on the CSRF token itself? Maybe say to use the WTF_CSRF_SECRET_KEY always?
     By default this will use the Flask app's SECRET_KEY. If you'd like to use a separate token you can set WTF_CSRF_SECRET_KEY 
     '''
 
