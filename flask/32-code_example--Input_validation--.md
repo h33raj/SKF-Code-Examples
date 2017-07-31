@@ -4,6 +4,7 @@ input validation
 
 **Example:**
 
+REMARK Glenn: i would advice to remove the logMessage and threatlevel from the input validation, make seperate methods for input validation for Alphanumeric, Nummeric, Alpha, Bool. Then use the Audit log function in the input validation.   
   
 	"""
 	This function is where you store all your input validation controls. 
