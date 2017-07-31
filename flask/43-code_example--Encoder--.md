@@ -3,6 +3,8 @@
 
 ## Example:
 
+REMARK Glenn: Encoding of dangerous characters is to transform them to non dangerous characters. The approach for this depends on the context you are using it. For HTML we encode them to HTML Entity and JSON to JSON Entity. Please adjust the code to reflect this. More info can be found here: 
+https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet#HTML_entity_encoding
 
     """
     This is the encoder class for whenever you have to allow certain
