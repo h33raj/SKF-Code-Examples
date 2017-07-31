@@ -3,6 +3,7 @@
 
 ## Example:
 
+REMARK Glenn: Change the Active values to True or False, it's more safe to operate on and check then a String No/NO/no or Yes/YES/yes
     """
     	Whenever you are developing a password forget function, these are the steps to follow
     	in order to create hardened defenses.
