@@ -19,6 +19,7 @@
 		including("file1.xsl,file2.xsl,etc", $_GET['xslfile'], "3")
 	"""
 
+REMARK Glenn: Add the validation checks here too in the method, and whitelisting should be done on static values, a list
 	def including(whiteListing, input, count):
 
 		continue = True
