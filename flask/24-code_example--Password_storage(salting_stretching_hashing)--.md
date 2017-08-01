@@ -10,7 +10,7 @@
 	bcrypt = Bcrypt(app)
 
 	"""
-		For the encryption of passwords we use php's BCRYPT encryption method.
+		For the encryption of passwords we use BCRYPT encryption method.
 	"""
 
 	def createHash(pwd):
@@ -21,6 +21,10 @@
 		Validate your password
 	"""
 
-	def ValidatePassword(pwd):
-		setLog(0, "ValidatePassword", "SUCCESS", str(datetime.utcnow()), "HIGH")
-		return bcrypt.check_password_hash(pw_hash, pwd)
+	def ValidatePassword(pwd_hash, pwd):
+		#setLog(0, "ValidatePassword", "SUCCESS", str(datetime.utcnow()), "HIGH")
+		try:
+			return bcrypt.check_password_hash(pwd_hash, pwd)
+		except ValueError:
+			return False
+		
