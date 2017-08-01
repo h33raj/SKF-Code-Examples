@@ -10,10 +10,12 @@ File upload
 	from werkzeug.utils import secure_filename
 
 	#Path to the upload directory
+REMARK Glenn: Add more information that the uplaod folder is and always is outside the document root
 	app.config['UPLOAD_FOLDER'] = 'uploads/'
 	#Extensions which are accepted to be uploaded
 	app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'pdf'])
 
+REMARK Glenn: Good check only really usable if there is only 1 . used in the filename, before using this function make a input validation method that checks the chars you expect so A-Za-z0-9_-. and reject input when it's not what you expect
 	#Check whether the file can be uploaded
 	def allowed_file(filename):
 	    return '.' in filename and \
@@ -22,6 +24,7 @@ File upload
 	#File upload route
 	@app.route('/upload', methods=['POST'])
 	def upload_file():
+REMARK Glenn: Just add a mock logging call here that the user started the function
 	    # Check if the post request has the file part
 	    if 'file' not in request.files:
 	        flash('No file part')
@@ -31,6 +34,7 @@ File upload
 	    # Submit a empty part without filename
 	    if file.filename == '':
 	        flash('No selected file')
+REMARK Glenn: Just add a mock logging call here that it wat not succesfull
 	        return redirect(request.url)
 	    # Check if the file is one of the allowed types/extensions
 	    if file and allowed_file(file.filename):
@@ -42,8 +46,10 @@ File upload
 	        # Redirect the user to the uploaded_file route, which
 	        # will basicaly show on the browser the uploaded file
 	        return redirect(url_for('uploaded_file', filename=filename))
+REMARK Glenn: Just add a mock logging call here that it wat succesfull
 	    else:
 	        flash('Not allowed extensions')
+REMARK Glenn: Just add a mock logging call here that it wat not succesfull
 	        return redirect(request.url)
 
 	@app.route('/uploads/<filename>')

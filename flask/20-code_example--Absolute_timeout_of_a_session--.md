@@ -1,11 +1,11 @@
 
-Timeout a session
+Absolute time out of a session
 -------
 
 **Example:**
 	
 	'''
-	Whenever a session is started, lifetime of a session should be set in seconds
+	Whenever a session is started, absolute time out (lifetime) of a session should be set in seconds
 	'''
 
 	from flask import Flask, session

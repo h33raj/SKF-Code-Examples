@@ -12,9 +12,6 @@ Session cookies HttpOnly
 	#Intialize the flask application
 	app = Flask(__name__)
 
-	# set the secret key.  keep this really secret:
-	app.secret_key = open("/dev/random","rb").read(32) 
-
 	#Name of the session cookie
 	app.config['SESSION_COOKIE_NAME'] = 'hrj'
 	#Path for the session cookie

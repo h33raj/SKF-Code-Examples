@@ -12,12 +12,13 @@
     def reauthenticate(password):
         user = User.query.filter_by(id=session['id']).first()
 
+REMARK GLENN: We need to add a reall password check here, because now it's a plain text approach
         if user.password == password:
 
             # After successful validation we will log that password was validated successfully
-
             setLog(session['id'], "Password return true", "SUCCESS", str(datetime.utcnow()), session['privilege'], "NULL")
 
+REMARK GLENN: Why is this needed? Its only to verify the user is still de real person doing this critical action. No more action is needed if passwords match?
             # Change the session on login
             session.regenerate()
 

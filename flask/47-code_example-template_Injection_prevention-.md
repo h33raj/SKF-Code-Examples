@@ -22,6 +22,7 @@
 		''' % (request.url)
     	return render_template_string(template), 404
 
+REMARK Glenn: Is it not better to use Input validation, lenght checking, and type checking for preventing the SSI?
     """
     The above code is vulnerable to SSTI,
     If we give http://www.example.com/ss/<script>alert(1)</script>

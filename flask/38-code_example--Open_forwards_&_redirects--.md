@@ -6,10 +6,10 @@
 
     """
     	When using forwards & redirects you should make sure the URL is being explicitly
-    	declared in the code and cannot be manipulated by an attacker like:
+    	declared in the code and cannot be manipulated by an attacker like example.com?page=dashboard :
     """
 
-        header("location:redirectpage.php");
+        header("location: dashboard");
 
     """
     	Generally you should avoid getting input into the redirect which could contain
@@ -18,11 +18,14 @@
     	send("value1,value2,etc", redirectParam, "3")
     """
 
+REMARK Glenn: Please rewrite this a bit its hard to follow, there should be an axample of a whitelist of allowed URL values and only if input is identical then we do the location header
+
         def send(whitelisting, input, count):
         """
         We want to whitelist the paged for expected values, in this example they are,
         page1,page2 etc.. for more information about whitelisting see "white-listing" in the code examples:
         """
+
             if whitelisting(whitelisting, input, count) == True:
                 response.headers['location'] = input
                 return response 

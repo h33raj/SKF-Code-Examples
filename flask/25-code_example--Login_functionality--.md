@@ -63,6 +63,7 @@
                 self.privilegeID = privilegeID
                 self.status = status
 
+REMARK Glenn: Before you can check the password you need to hash it and compare the has in the DB, Teach people here also about correct password storage. Show the Bycrypt encrypt hash function here to compare with value password hash from db
         #Login a user
         @app.route('/login', methods=['GET', 'POST'])
         def login():

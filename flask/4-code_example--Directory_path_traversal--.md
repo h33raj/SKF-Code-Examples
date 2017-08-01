@@ -3,6 +3,7 @@
 
 ## Example:
 
+REMARK Glenn: Rebuild the code below and show/create a function that can retrieve a file from different folders
 	"""
 		Define the whitelist pattern and validation type and input parameter, countLevel like:
 		getFiles("page1,page2,etc", "alphanummeric", $_GET['filename'], "3")

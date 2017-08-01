@@ -17,5 +17,5 @@
 			allow-scripts  Re-enables scripts
 			allow-top-navigation  Allows the iframe content to navigate its top-level browsing context
 			*/
-
+	    </iframe>
 

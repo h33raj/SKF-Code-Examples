@@ -11,7 +11,7 @@
     	automatically generate a table for this user which contains his userID, counter and blocker
     	variable in order to keep track of his behavior.
     """
-
+REMARK Glenn: Please check the ASVS audit log section for what to log for example i miss the IP of the user. Also needs more comments about what the threat is like LOW, MEDIUM, HIGH. Also value should be message for example: User triggered search function
         def setLog(userId, error, value, date, threat):
             #Save log file in a directory which has restrictions in place so no one can 
             file = "restrictedfolder/logfile.txt"

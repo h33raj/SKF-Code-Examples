@@ -3,7 +3,8 @@
 
 ## Example:
 
-	
+REMARK Glenn: Add logging also
+
     from flask.ext.bcrypt import Bcrypt
 
     #Intialise the application with Bcrypt

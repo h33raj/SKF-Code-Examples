@@ -3,7 +3,7 @@
 
 ## Example:
 
-
+REMARK Glenn: Looks good, please also add output encoding for HTML and JSON, check HTML en JSON Entity encoding https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet#HTML_entity_encoding
 
     """
     Whenever user input is displayed in the application, whether, as content or a parameter value

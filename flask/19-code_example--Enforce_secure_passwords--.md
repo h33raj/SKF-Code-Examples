@@ -8,6 +8,7 @@
     	error = []
     	proceed = True
     	#Recommended a longer password for Security
+REMARK Glenn: I think 8chars is already very short, maybe 12?
     	if(len(pwd) < 8):
         	error.append("Password is too Short!!")
         	proceed = False

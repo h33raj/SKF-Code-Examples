@@ -3,6 +3,7 @@
 
 ## Example:
 
+REMARK Glenn: Whitelisting is checking if a value is identically the same as the whitelist we created. Please rewrite the below part to reflect this.
 
     """
     First we create a function which checks the allowed patterns:
