@@ -63,7 +63,7 @@
                 self.privilegeID = privilegeID
                 self.status = status
 
-REMARK Glenn: Before you can check the password you need to hash it and compare the has in the DB, Teach people here also about correct password storage. Show the Bycrypt encrypt hash function here to compare with value password hash from db
+
         #Login a user
         @app.route('/login', methods=['GET', 'POST'])
         def login():
@@ -82,13 +82,16 @@ REMARK Glenn: Before you can check the password you need to hash it and compare 
                 return redirect(url_for('login'))
 
             # Username and password check   
-            registered_user = User.query.filter_by(username=username, password=password).first()
+            registered_user = User.query.filter_by(username=username).first()
             if registered_user is None:
                 flash('Username or Password is invalid' , 'error')
                 return redirect(url_for('login'))
 
-            # Logged In successfully
-            login_user(registered_user)
-            flash('Logged in successfully')
+            # Validate the password hash on bycrypt
+            elif ValidatePassword(registered_user.password, password):
+
+                # Logged In successfully
+                login_user(registered_user)
+                flash('Logged in successfully')
             
             return render_template('home.html', user=request.form['inputName'])
