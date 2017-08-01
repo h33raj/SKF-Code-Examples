@@ -21,8 +21,9 @@ REMARK Glenn: Maybe add load_dtd=False and explain why and the impact if this is
 		XML file which is taken in the parser, he can read any file using the file protocol file:/// or use some other protocols like expect://, gopher:// to even get a shell        
         """
 
-
 	    from lxml import etree
+	    
+	    # Both the entities and DTD are turned off
 	    parser = etree.XMLParser(dtd_validation=False ,resolve_entities=False)
 	    root = etree.XML("<root><a/><b></b></root>", parser)
 	    
