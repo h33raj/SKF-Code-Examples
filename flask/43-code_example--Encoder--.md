@@ -19,6 +19,7 @@ https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Shee
 	    
 	    flag = True
 	    match = re.findall("/^[a-zA-Z0-9 " + allowed+"]+$/", input)
+
 	    if match:
 
 	        """

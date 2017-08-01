@@ -9,13 +9,20 @@ File upload
 	from flask import url_for,send_from_directory
 	from werkzeug.utils import secure_filename
 
-	#Path to the upload directory
-REMARK Glenn: Add more information that the uplaod folder is and always is outside the document root
-	app.config['UPLOAD_FOLDER'] = 'uploads/'
+	"""
+	Always store the uploaded files in a directory somewhere outside the document root or that is not 
+	accessible from the web. Because there is chance that attacker could upload malicious file and 
+	later access it via the web server. 
+	"""
+
+	#Path to the upload directory	
+	app.config['UPLOAD_FOLDER'] = '~/uploads/'
+	
 	#Extensions which are accepted to be uploaded
 	app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'pdf'])
 
 REMARK Glenn: Good check only really usable if there is only 1 . used in the filename, before using this function make a input validation method that checks the chars you expect so A-Za-z0-9_-. and reject input when it's not what you expect
+	
 	#Check whether the file can be uploaded
 	def allowed_file(filename):
 	    return '.' in filename and \

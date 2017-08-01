@@ -8,8 +8,7 @@
     	error = []
     	proceed = True
     	#Recommended a longer password for Security
-REMARK Glenn: I think 8chars is already very short, maybe 12?
-    	if(len(pwd) < 8):
+    	if(len(pwd) < 13):
         	error.append("Password is too Short!!")
         	proceed = False
     
@@ -17,6 +16,7 @@ REMARK Glenn: I think 8chars is already very short, maybe 12?
     The password should include at least one number, a small letter, a CAPS,
     and a special character as defined in the patterns array:
     """
+    
     	if not any(x.isupper() for x in pwd):
         	error.append('Your password needs at least 1 capital letter')
     	if not any(x.islower() for x in pwd):

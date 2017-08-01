@@ -3,8 +3,6 @@
 
 ## Example:
 
-REMARK Glenn: Add logging also
-
     from flask.ext.bcrypt import Bcrypt
 
     #Intialise the application with Bcrypt
@@ -16,6 +14,7 @@ REMARK Glenn: Add logging also
 	"""
 
 	def createHash(pwd):
+		setLog(0, "Create password Hash", "SUCCESS", str(datetime.utcnow()), "HIGH")
 		return bcrypt.generate_password_hash(pwd)
 
 	"""
@@ -23,4 +22,5 @@ REMARK Glenn: Add logging also
 	"""
 
 	def ValidatePassword(pwd):
+		setLog(0, "ValidatePassword", "SUCCESS", str(datetime.utcnow()), "HIGH")
 		return bcrypt.check_password_hash(pw_hash, pwd)
