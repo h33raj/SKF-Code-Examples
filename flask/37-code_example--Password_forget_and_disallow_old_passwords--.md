@@ -3,7 +3,7 @@
 
 ## Example:
 
-REMARK Glenn: Change the Active values to True or False, it's more safe to operate on and check then a String No/NO/no or Yes/YES/yes
+
     """
     	Whenever you are developing a password forget function, these are the steps to follow
     	in order to create hardened defenses.
@@ -12,11 +12,11 @@ REMARK Glenn: Change the Active values to True or False, it's more safe to opera
         -----------------------------------------------------------------
         | userID   | userName | password |   EmailAdress	 |  access  |
         -----------------------------------------------------------------   
-        |   1	   | Admin	  | Csdar323 | info@admin.com	 | 	   TRUE |
+        |   1	   | Admin	  | Csdar323 | info@admin.com	 | 	   True |
         -----------------------------------------------------------------    	
-        |	  2	   | User	  | Adf4fsv  | info@user.com     |  FALSE   |
+        |	  2	   | User	  | Adf4fsv  | info@user.com     |     False|
         -----------------------------------------------------------------    
-        |	  3	   | Guest	  | dff4fKr  | info@guest.com	 |	   TRUE |
+        |	  3	   | Guest	  | dff4fKr  | info@guest.com	 |	   True |
         -----------------------------------------------------------------    
 
 
@@ -24,11 +24,11 @@ REMARK Glenn: Change the Active values to True or False, it's more safe to opera
         -----------------------------------------------------------------------------------------   
         | forgotPasswordID | 		Token 	    | 	UserID |   Active	|	  olPasswords	    |
         -----------------------------------------------------------------------------------------
-        |      1  	 	   | c3ab8ff13720e....  |	  1	   | 	YES		|	   Csdar323	      	|
+        |      1  	 	   | c3ab8ff13720e....  |	  1	   | 	True	|	   Csdar323	      	|
         -----------------------------------------------------------------------------------------
-        |	     2	 	   | 7dd39466b3c89....  |	  1	   | 	NO		  |		ef0c4f2         |
+        |	   2	 	   | 7dd39466b3c89....  |	  1	   | 	False   |		ef0c4f2         |
         -----------------------------------------------------------------------------------------
-        |	     3	 	   | 83d4a3960714c....	|	  3	   | 	NO		  |		dff4fKr	        |
+        |	   3	 	   | 83d4a3960714c....	|	  3	   | 	True	|		dff4fKr	        |
         -----------------------------------------------------------------------------------------
 
 
@@ -67,7 +67,7 @@ REMARK Glenn: Change the Active values to True or False, it's more safe to opera
             the password reset token.
             """
 
-            active = "No"
+            active = False
 
             user.active = active
             db.session.commit()
@@ -95,7 +95,7 @@ REMARK Glenn: Change the Active values to True or False, it's more safe to opera
     	forgot tokens matches the token in the database.
     	"""
 
-    	active = "YES"
+    	active = True
 
         data = forgetPassword.query.join(members, forgetPassword.userID==members.userID).filter_by(token=resetLink,Active=active).all()
 
@@ -136,7 +136,7 @@ REMARK Glenn: Change the Active values to True or False, it's more safe to opera
                 else:
                     
                     # First we update the new password for the user
-                    active = "No"
+                    active = False
 
                     # Update the details
                     newUser = members.query.filter_by(userID=userID).first()

@@ -13,9 +13,10 @@ Debug Enabling
     $ flask run
 
     #On Windows you need to use set instead of export
-REMARK Glenn: please show that
+    $ set FLASK_DEBUG=0
 
-REMARK Glenn: Make if to False default
     #Even with python you can enable debug mode
     app.debug = False
-    app.run(debug=False)
+
+    #By default it is False
+    app.run()
