@@ -4,8 +4,11 @@ Content type headers
 
 **Example:**
 
-REMARK Glenn: Please explain when you would use this header and add the header for JSON and you need to enforce the JSON header because of XSS etc.
 
-	#Content Type Header
+	# Content Type Header for HTML pages
 	response.headers["Content-Type"] = "text/html; charset=UTF-8"
     return response
+
+    # Content Type Header for JSON objects
+	response.headers["Content-Type"] = "application/json"
+    return response    
