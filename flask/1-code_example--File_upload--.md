@@ -31,32 +31,44 @@ REMARK Glenn: Good check only really usable if there is only 1 . used in the fil
 	#File upload route
 	@app.route('/upload', methods=['POST'])
 	def upload_file():
-REMARK Glenn: Just add a mock logging call here that the user started the function
+		setLog(0, "Upload function has started", "SUCCESS", str(datetime.utcnow()), "HIGH")
+
 	    # Check if the post request has the file part
 	    if 'file' not in request.files:
 	        flash('No file part')
 	        return redirect(request.url)
+	    
 	    # Get the name of the uploaded file
 	    file = request.files['file']
+
 	    # Submit a empty part without filename
 	    if file.filename == '':
 	        flash('No selected file')
-REMARK Glenn: Just add a mock logging call here that it wat not succesfull
+	        setLog(0, "No File was selected", "FAIL", str(datetime.utcnow()), "HIGH")
 	        return redirect(request.url)
+	    
 	    # Check if the file is one of the allowed types/extensions
 	    if file and allowed_file(file.filename):
+	        
 	        # Make the filename safe, remove unsupported chars
 	        filename = secure_filename(file.filename)
+	        
 	        # Move the file form the temporal folder to
 	        # the upload folder we setup
 	        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
 	        # Redirect the user to the uploaded_file route, which
 	        # will basicaly show on the browser the uploaded file
+	        setLog(0, "Upload was successful", "SUCCESS", str(datetime.utcnow()), "HIGH")
 	        return redirect(url_for('uploaded_file', filename=filename))
+	        
 REMARK Glenn: Just add a mock logging call here that it wat succesfull
 	    else:
+	        
 	        flash('Not allowed extensions')
-REMARK Glenn: Just add a mock logging call here that it wat not succesfull
+	        
+	        # Log the unsuccessful upload
+	        setLog(0, "Upload was not successful, not allowed extensions", "FAIL", str(datetime.utcnow()), "HIGH")
 	        return redirect(request.url)
 
 	@app.route('/uploads/<filename>')
