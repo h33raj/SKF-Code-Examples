@@ -7,6 +7,7 @@
     def checkPassword(pwd):
     	error = []
     	proceed = True
+
     	#Recommended a longer password for Security
     	if(len(pwd) < 13):
         	error.append("Password is too Short!!")
@@ -44,7 +45,8 @@
     	if proceed == True:
         	flash("Your password is allowed!")
         	return True
-    	else:
+    	
+        else:
         	flash("Password validation failure(your choise is weak):")
         	for x in error:
             	print x
