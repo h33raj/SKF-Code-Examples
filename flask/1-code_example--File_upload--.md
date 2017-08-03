@@ -20,8 +20,6 @@ File upload
 	
 	#Extensions which are accepted to be uploaded
 	app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'pdf'])
-
-REMARK Glenn: Good check only really usable if there is only 1 . used in the filename, before using this function make a input validation method that checks the chars you expect so A-Za-z0-9_-. and reject input when it's not what you expect
 	
 	#Check whether the file can be uploaded
 	def allowed_file(filename):
@@ -52,7 +50,11 @@ REMARK Glenn: Good check only really usable if there is only 1 . used in the fil
 	        
 	        # Make the filename safe, remove unsupported chars
 	        filename = secure_filename(file.filename)
-	        
+	
+	        # Remove the input when filename contains more than single dot
+	        if len(filename.split('.')) > 1:
+	        	return redirect(request.url)
+
 	        # Move the file form the temporal folder to
 	        # the upload folder we setup
 	        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -62,9 +64,7 @@ REMARK Glenn: Good check only really usable if there is only 1 . used in the fil
 	        setLog(0, "Upload was successful", "SUCCESS", str(datetime.utcnow()), "HIGH")
 	        return redirect(url_for('uploaded_file', filename=filename))
 	        
-REMARK Glenn: Just add a mock logging call here that it wat succesfull
 	    else:
-	        
 	        flash('Not allowed extensions')
 	        
 	        # Log the unsuccessful upload

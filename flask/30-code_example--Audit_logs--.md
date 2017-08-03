@@ -13,11 +13,16 @@
     """
 REMARK Glenn: Please check the ASVS audit log section for what to log for example i miss the IP of the user. Also needs more comments about what the threat is like LOW, MEDIUM, HIGH. Also value should be message for example: User triggered search function
         def setLog(userId, error, value, date, threat):
+            
+            #Take the client's IP address
+            ip = request.remote_addr
+
             #Save log file in a directory which has restrictions in place so no one can 
             file = "restrictedfolder/logfile.txt"
             f = open(file, 'w+')
+            
             #Notice how we user the userID instead of the actual username in order to prevent the integrity of these usernames
-            f.write(date + str(userId) + error + value + threat)
+            f.write(date + str(userId) + error + value + threat + "Ip : " + str(ip))
             f.close()
 
 
