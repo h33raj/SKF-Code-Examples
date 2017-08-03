@@ -5,9 +5,9 @@ Secure session cookies
 
 
     """
-REMARK Glenn: Please explain the HTTP Only flag also
-	Whenever a cookie is sent over a secured connection, the cookie should be set
-	with the secure flag, in order to guarantee the integrity of the data it contains.
+    Javascript cannot set or read cookie's value if the HTTPOnly attribute is set on cookie.
+    It makes attacker client side attacks such as Cross Site scripting harder to exploit.
+    Attacker will not be able to steal the user's cookies.
 	"""
 
 	from flask import Flask, session
@@ -20,16 +20,21 @@ REMARK Glenn: Please explain the HTTP Only flag also
 
 	#Name of the session cookie
 	app.config['SESSION_COOKIE_NAME'] = 'hrj'
+	
 	#Path for the session cookie
 	app.config['SESSION_COOKIE_PATH'] = '/'
+	
 	#Domain for the session cookie
 	#Configure domains, do not use .yourdomain.com (wildcard)
 	#this increases the attack surface!
 	app.config['SESSION_COOKIE_DOMAIN'] = 'demo.yourdomain.com'
+	
 	#Controls if the cookie should be set with the secure flag
 	app.config['SESSION_COOKIE_SECURE'] = True
+	
 	#Controls if the cookie should be set with the httponly flag
 	app.config['SESSION_COOKIE_HTTPONLY'] = True
+	
 	#Lifetime of a permanent session
 	app.config['PERMANENT_SESSION_LIFETIME'] = 3600
 
