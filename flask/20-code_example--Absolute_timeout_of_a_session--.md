@@ -18,16 +18,21 @@ Absolute time out of a session
 
 	#Name of the session cookie
 	app.config['SESSION_COOKIE_NAME'] = 'hrj'
+
 	#Path for the session cookie
 	app.config['SESSION_COOKIE_PATH'] = '/'
+	
 	#Domain for the session cookie
 	#Configure domains, do not use .yourdomain.com (wildcard)
 	#this increases the attack surface!
 	app.config['SESSION_COOKIE_DOMAIN'] = 'demo.yourdomain.com'
+	
 	#Controls if the cookie should be set with the secure flag
 	app.config['SESSION_COOKIE_SECURE'] = True
+	
 	#Controls if the cookie should be set with the httponly flag
 	app.config['SESSION_COOKIE_HTTPONLY'] = True
+	
 	#Lifetime of a permanent session
 	app.config['PERMANENT_SESSION_LIFETIME'] = 3600
 
