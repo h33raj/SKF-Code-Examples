@@ -6,12 +6,13 @@
 REMARK Glenn: Indeed input validation and rejection is important and the way to go but currenctly this code is hard to understand. Can you reqrite it so it's more clear?
 
     """
-        Define the allowed characters and input parameter and countlevel for the
-        user lockout like:
-        controller("<'>&", $_GET['filename'], "3")
+    Define the allowed characters and input parameter and countlevel for the
+    user lockout like:
+    controller("<'>&", $_GET['filename'], "3")
     """
     
     def controller(allowed, input, count):
+        
         """
         First we build our encoding method, see "input validation" code example for
         more detailed information about encoding and escaping.
