@@ -1,11 +1,19 @@
 
-Content type headers
+Charsets
 -------
 
 **Example:**
 
-	'''
-    In order to set the "Content-Type" header you'll have to add the following code to the head of your application
+    '''
+    In order to set the "Charsets" header you'll have to add the following code to the head of your application, the following code could be used in your controller: For Example, text/html
+    '''
+
+    #You add directly into the HTML markup
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    '''
+    In order to set the "Content-Type" header and charset you'll have to add the following code
+    to the head of your application
 
     For adding Content-Type in everypage we have to add a middleware
 
@@ -22,10 +30,7 @@ Content type headers
         	
         	# For HTML, the content type is text/html
 			response['Content-Type'] = 'text/html; charset=UTF-8'
-			
-			# For Json, the content type is application/json
-			response['Content-Type'] = 'application/json'
-        	
+
         	return response
    	
    	# For adding middleware in the project, add in yourproject/settings.py
@@ -45,9 +50,6 @@ Content type headers
 	# For HTML, the content type is text/html
 	response['Content-Type'] = 'text/html; charset=UTF-8'
 	
-	# For Json, the content type is application/json
-	response['Content-Type'] = 'application/json'
-	
 	return response
 
 	'''
@@ -59,7 +61,4 @@ Content type headers
 	# For HTML, the content type is text/html
 	response['Content-Type'] = 'text/html; charset=UTF-8'
 	
-	# For Json, the content type is application/json
-	response['Content-Type'] = 'application/json'
-	
-	return response   
+	return response  
