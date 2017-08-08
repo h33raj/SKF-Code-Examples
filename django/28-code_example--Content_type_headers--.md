@@ -1,9 +1,10 @@
-X-Content-Type-Options header
+
+Content type headers
 -------
 
 **Example:**
 
-    '''
+	'''
     In order to set the "X-Content-Type-Options" header you'll have to add the following code to the head of your application
 
     For adding X-Content-Type-Options in everypage we have to add a middleware
@@ -18,7 +19,13 @@ X-Content-Type-Options header
 
     	def __call__(self, request):
         	response = self.get_response(request)
-        	response['X-Content-Type-Options'] = "nosniff"
+        	
+        	# For HTML, the content type is text/html
+			response['Content-Type'] = 'text/html; charset=UTF-8'
+			
+			# For Json, the content type is application/json
+			response['Content-Type'] = 'application/json'
+        	
         	return response
    	
    	# For adding middleware in the project, add in yourproject/settings.py
@@ -34,7 +41,13 @@ X-Content-Type-Options header
 	'''
 
 	response = render_to_response("template.html", {})
-	response['X-Content-Type-Options'] = 'nosniff'
+	
+	# For HTML, the content type is text/html
+	response['Content-Type'] = 'text/html; charset=UTF-8'
+	
+	# For Json, the content type is application/json
+	response['Content-Type'] = 'application/json'
+	
 	return response
 
 	'''
@@ -42,5 +55,11 @@ X-Content-Type-Options header
 	'''
 
 	response = render(request, "template.html", {})
-	response['X-Content-Type-Options'] = 'nosniff'
-	return response
+	
+	# For HTML, the content type is text/html
+	response['Content-Type'] = 'text/html; charset=UTF-8'
+	
+	# For Json, the content type is application/json
+	response['Content-Type'] = 'application/json'
+	
+	return response   
