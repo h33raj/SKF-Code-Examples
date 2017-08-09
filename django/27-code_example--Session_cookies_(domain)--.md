@@ -1,11 +1,13 @@
-Secure session cookies
+
+Session cookies (domain)
 -------
 
 **Example:**
 
-    """
-    If you use SLL you can also make your cookies secure (encrypted) to 
-    avoid "man-in-the-middle" cookies reading with
+
+	"""
+	Whenever a session is started, and you want to share it over different domains,
+	the domain value should be set to the specific domain
 
     For using sessions edit the middleware and make sure it contains 'django.contrib.sessions.middleware.SessionMiddleware'
 
@@ -32,7 +34,6 @@ Secure session cookies
 	For setting session cookie path, we have to add the line in settings.py
 	
 	SESSION_COOKIE_SECURE = True
-	
 	"""
 
 	# For adding session cookie
