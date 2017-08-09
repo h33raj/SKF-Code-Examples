@@ -6,7 +6,7 @@ Secure session cookies
 
     """
     If you use SLL you can also make your cookies secure (encrypted) to 
-    avoid "man-in-the-middle" cookies reading with
+    avoid "man-in-the-middle" cookies reading
 	"""
 
 	from flask import Flask, session
