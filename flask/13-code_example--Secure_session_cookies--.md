@@ -5,9 +5,8 @@ Secure session cookies
 
 
     """
-    Javascript cannot set or read cookie's value if the HTTPOnly attribute is set on cookie.
-    It makes attacker client side attacks such as Cross Site scripting harder to exploit.
-    Attacker will not be able to steal the user's cookies.
+    If you use SLL you can also make your cookies secure (encrypted) to 
+    avoid "man-in-the-middle" cookies reading
 	"""
 
 	from flask import Flask, session
