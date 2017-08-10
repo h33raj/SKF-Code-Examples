@@ -9,9 +9,12 @@ Random password/token generation
 	instead of writing your own.
 	"""
 	
-	#Generate a strong security key
-	app.secret_key = os.urandom(32)
-
-	#A random string for generating WTF CSRF token
-	app.config['WTF_CSRF_SECRET_KEY'] = base64.b64encode(rand.bytes(128))
+	# Return a 50 character random string usable as a SECRET_KEY setting value.
+	from django.core.management.utils import get_random_secret_key
+	SECRET_KEY = get_random_secret_key()
+	
+	# generate an even longer random string usable as a SECRET_KEY setting
+	from django.utils.crypto import get_random_string
+	chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+	SECRET_KEY = get_random_string(100, chars)
     
