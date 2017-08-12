@@ -10,7 +10,7 @@
 	bcrypt = Bcrypt(app)
 
 	"""
-		For the encryption of passwords we use BCRYPT encryption method.
+	For the encryption of passwords we use BCRYPT encryption method.
 	"""
 
 	def createHash(pwd):
@@ -18,7 +18,7 @@
 		return bcrypt.generate_password_hash(pwd)
 
 	"""
-		Validate your password
+	Validate your password
 	"""
 
 	def ValidatePassword(pwd_hash, pwd):
