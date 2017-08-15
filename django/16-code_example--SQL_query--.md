@@ -25,7 +25,27 @@ SQL query
     	last_name = models.CharField(max_length=30)
 
 
+    """
+    In order to add your model to django, you have to add the app in INSTALLED_APP
+    """
 
+    INSTALLED_APPS = [
+    	#...
+    	'myapp',
+    	#...
+	]
+
+
+	"""
+	After adding the application, inorder to make the changes we need to make migrations
+	and migrate
+	"""
+
+	$ python manage.py makemigrations
+
+	$ python manage.py migrate
+
+	
 	from flask_sqlalchemy import SQLAlchemy
 	
 	#Will track modifications of objects and emit signals
