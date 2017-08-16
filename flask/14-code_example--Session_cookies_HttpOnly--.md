@@ -3,9 +3,9 @@ Session cookies HttpOnly
 
 **Example:**
 
-	'''
+	"""
 	Whenever a session is started, the "httpOnly" option should always be set to "true" or "1":
-	'''
+	"""
 	
 	from flask import Flask, session
 
