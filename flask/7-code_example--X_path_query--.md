@@ -3,12 +3,13 @@
 
 ## Example:
 
-REMARK Glenn: Indeed input validation and rejection is important and the way to go but currenctly this code is hard to understand. Can you reqrite it so it's more clear?
-
     """
     Define the allowed characters and input parameter and countlevel for the
     user lockout like:
     controller("<'>&", $_GET['filename'], "3")
+    
+    In order to prevent x-path injections we have to treat these query's similar as 
+    to the sql query's. 
     """
     
     def controller(allowed, input, count):
@@ -23,10 +24,12 @@ REMARK Glenn: Indeed input validation and rejection is important and the way to 
         # If the encoder came back false we do not process the function!
 
         if return != False:
-            # Start a new Document
-            root = etree.parse("test.xml")
 
-            find = etree.XPath("//lemonade[@supplier=" + return +"]/price")
+            # Parse the register.xml
+            root = etree.parse("register.xml")
+
+            # Extract the id from the XML using XPath
+            find = etree.XPath('/Employees/Employee[ID=' + return + ']')
 
             for x in find(root):
                 print x.text
