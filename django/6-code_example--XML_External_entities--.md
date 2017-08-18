@@ -26,6 +26,8 @@ XML External entities
 		# Deserialize the XML
 
 		for obj in serializers.deserialize("xml", data):
+	    	
+	    	# Accessing object
 	    	obj.object
 
 
