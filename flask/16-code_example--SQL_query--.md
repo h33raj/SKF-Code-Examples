@@ -59,7 +59,9 @@ https://www.quantifiedcode.com/knowledge-base/security/Prevent%20SQL%20injection
 	"""
 	from sqlalchemy import text
 
-	sql = text('select name from penguins')
+	# Protection from string interpolation attack
+	sql = text("select name from penguins where id =%s" % (name,) )
+	
 	result = db.engine.execute(sql)
 
 	print result[0]
