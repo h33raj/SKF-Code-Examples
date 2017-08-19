@@ -51,12 +51,10 @@ SQL query
 	admin = User.query.filter_by(username='admin').first()
 	admin.id
 
-REMARK Glenn: Also add raw SQL string and approach, check best practise on this site, bind userinput to columns 
-https://www.quantifiedcode.com/knowledge-base/security/Prevent%20SQL%20injections%20by%20avoiding%20string%20interpolations/3cObiWuF
-
 	"""
 	SQL raw string approach
 	"""
+
 	from sqlalchemy import text
 
 	# Protection from string interpolation attack
