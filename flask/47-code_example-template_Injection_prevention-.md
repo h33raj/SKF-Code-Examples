@@ -22,7 +22,6 @@
 		''' % (request.url)
     	return render_template_string(template), 404
 
-REMARK Glenn: Is it not better to use Input validation, lenght checking, and type checking for preventing the SSI?
     """
     The above code is vulnerable to SSTI,
     If we give http://www.example.com/ss/<script>alert(1)</script>
@@ -38,14 +37,20 @@ REMARK Glenn: Is it not better to use Input validation, lenght checking, and typ
     @app.errorhandler(404)
 	def page_not_found(e):
 
+		# Intialize
+		continue = True
+
 		# Escape function would fix the issue
-    	url = request.url.replace("{","").replace("}","")
+    	url = request.url
     	url = escape(url)
     	
     	# Checking the url
     	p = re.compile(r'(http://www.example.com/(.*))(\?.*)?')
+
+    	if inputValidation(url, "alphanumeric") or len(url>20) or inputValidation(url, "alpha"):
+    		continue = False
     	
-    	if p.match(url):
+    	if p.match(url) and continue==True:
 
     		template = '''{%% extends "layout.html" %%}
 			{%% block body %%}
