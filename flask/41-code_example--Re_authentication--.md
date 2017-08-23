@@ -4,9 +4,9 @@
 ## Example:
 
     """
-        Whenever a user wants to change his credentials or do other important data exchanges such as
-        transferring money he should always be challenged to re-authenticate himself before
-        allowing them to perform these actions.
+    Whenever a user wants to change his credentials or do other important data exchanges such as
+    transferring money he should always be challenged to re-authenticate himself before
+    allowing them to perform these actions.
     """
     
     def reauthenticate(password):
@@ -45,8 +45,8 @@
 
 
     """
-        Before we let a user perform certain actions he should first be challenged to authenticate
-        himself. imagine the following scenario, the user wants to change his email address.
+    Before we let a user perform certain actions he should first be challenged to authenticate
+    himself. imagine the following scenario, the user wants to change his email address.
     """
 
     if reauthenticate(password) !== true :
