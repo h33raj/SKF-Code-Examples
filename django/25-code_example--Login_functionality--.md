@@ -5,36 +5,36 @@
 
 
     """
-        For privilege based authentication we need an extra table in your database in order to write the users privileges to.
+    For privilege based authentication we need an extra table in your database in order to write the users privileges to.
 
-        TABLE users
-        ---------------------------------------------------------------------
-        | userID     | userName   | password | privilegeID   |    access	| 
-        ---------------------------------------------------------------------   
-        | 1	         | Admin	  | Csdar323 |	  1		     | 	   TRUE		|
-        ---------------------------------------------------------------------   	
-        |	2	     | User		  | Adf4fsv  |	  2		     |	   FALSE	|
-        ---------------------------------------------------------------------   
-        |	3	     | Guest	  | dff4fKr  |	  3		     |	   TRUE		|
-        ---------------------------------------------------------------------   
+    TABLE users
+    ---------------------------------------------------------------------
+    | userID     | userName   | password | privilegeID   |    access	| 
+    ---------------------------------------------------------------------   
+    | 1	         | Admin	  | Csdar323 |	  1		     | 	   TRUE		|
+    ---------------------------------------------------------------------   	
+    |	2	     | User		  | Adf4fsv  |	  2		     |	   FALSE	|
+    ---------------------------------------------------------------------   
+    |	3	     | Guest	  | dff4fKr  |	  3		     |	   TRUE		|
+    ---------------------------------------------------------------------   
 
-        TABLE privileges
-        -------------------------------------- 
-        | privilegeID     | privilege        |
-        --------------------------------------
-        |   1	    	  | edit:read:delete |
-        --------------------------------------
-        |	  2	 	      | edit:read		 |
-        --------------------------------------
-        |	  3	 	      | read	         |
-        --------------------------------------
+    TABLE privileges
+    -------------------------------------- 
+    | privilegeID     | privilege        |
+    --------------------------------------
+    |   1	    	  | edit:read:delete |
+    --------------------------------------
+    |	  2	 	      | edit:read		 |
+    --------------------------------------
+    |	  3	 	      | read	         |
+    --------------------------------------
 
-        Now instead of using roles in sessions we rather want to assign privileges to users
-        by means of a Database-Based Authentication system.
-        Now we can easily assign a user certain privileges for him to access.
-        See "Privilege based authentication" code example for more information:
-        We will be using flask_login module for login
+    Now instead of using roles in sessions we rather want to assign privileges to users
+    by means of a Database-Based Authentication system.
+    Now we can easily assign a user certain privileges for him to access.
+    See "Privilege based authentication" code example for more information:
     
+    Django authentication in default has inbuilt code for most part of the authentication
     """
 
         from flask_login import login_user, LoginManager, UserMixin, logout_user, login_required
