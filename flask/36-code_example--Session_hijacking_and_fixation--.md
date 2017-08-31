@@ -88,33 +88,33 @@
 
 
     """
-    	Now imagine the scenario after the login of the user (see the "login functionality" in
-    	the code examples for more details). Whenever the user is logged in, the users IP address
-    	and session id are also stored in the database these values are used in order to verify
-    	if there are multiple users active on the same session.
-    	If so, we can let the user decide to terminate the session and terminate the
-    	other assigned sessions.
+    Now imagine the scenario after the login of the user (see the "login functionality" in
+    the code examples for more details). Whenever the user is logged in, the users IP address
+    and session id are also stored in the database these values are used in order to verify
+    if there are multiple users active on the same session.
+    If so, we can let the user decide to terminate the session and terminate the
+    other assigned sessions.
     """
 
     def checkSession():
-    #To check whether the user is active
-    if session['status'] != "active" or session['status'] == "":
-        return redirect(url_for('login'))
+        #To check whether the user is active
+        if session['status'] != "active" or session['status'] == "":
+            return redirect(url_for('login'))
 
-    """
+        """
         Then we start the rest of the function where we will check if there are multiple
         users/IP addresses using the same session id
-    """
+        """
     
-    # Store the current session
-    session = request.cookies.get('session')
+        # Store the current session
+        session = request.cookies.get('session')
 
-    # Get user ip address
-    ipaddress = request.remote_addr
+        # Get user ip address
+        ipaddress = request.remote_addr
 
-    trackSession = track_sessions.query.filter_by(ipaddress = ipaddress).first()
-    if trackSession.session == ipaddress:
-        return """<div style='border-style:solid; border-color:black; color:white; background-color:red; float:left;'>
+        trackSession = track_sessions.query.filter_by(ipaddress = ipaddress).first()
+        if trackSession.session == ipaddress:
+            return """<div style='border-style:solid; border-color:black; color:white; background-color:red; float:left;'>
                 <p>There are other active sessions on other IP-addresses.<br/>
                 Your session could be hijacked press logout in order to authenticate again
                 for security reasons!
