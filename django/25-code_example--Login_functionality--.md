@@ -7,16 +7,18 @@
     """
     For privilege based authentication we need an extra table in your database in order to write the users privileges to.
 
+    Django has inbuilt users table 
+
     TABLE users
-    --------------------------------------------------------------------------------------------------------
-    |ID|password|last_login|is_superuser|first_name|last_name|email|is_staff|is_active|date_joined|username|
-    --------------------------------------------------------------------------------------------------------   
+    ---------------------------------------------------------------------------------------------------------
+    |ID|password|last_login|is_superuser|first_name|last_name|email|is_staff|is_active|date_joined|username |
+    ---------------------------------------------------------------------------------------------------------  
     |1 |pbkdf2_s|2017-08-31|	  0		| 	ram    |  mohan  |ra@..|   0    |    1    |2017-08-31.| ram12   |
-    --------------------------------------------------------------------------------------------------------   	
+    ---------------------------------------------------------------------------------------------------------  	
     |2 |pbkdf2_s|2017-08-29|	  0	    |	james  |  mathew |j@g..|   1    |    1    |2017-08-30.| mathew  |
-    --------------------------------------------------------------------------------------------------------   
+    ---------------------------------------------------------------------------------------------------------  
     |3 |pbkdf2_s|2017-08-30|	  1	    |	admin  |  admin  |adm@.|   1    |    1    |2017-08-29.| admin   |
-    --------------------------------------------------------------------------------------------------------   
+    ---------------------------------------------------------------------------------------------------------   
 
 
     Now instead of using roles in sessions we rather want to assign privileges to users
@@ -25,63 +27,116 @@
     See "Privilege based authentication" code example for more information:
     
     Django authentication in default has inbuilt code for most part of the authentication
+    such as login, logout, password reset
     """
 
-        from flask_login import login_user, LoginManager, UserMixin, logout_user, login_required
+    # Create a login Template using form in django
+    # File location registration/login.html
 
-        #Instantiating Flask Login
-        login_manager = LoginManager()
-        login_manager.init_app(app)
+    {% extends 'base.html' %}
 
+    {% block title %}Login{% endblock %}
 
-        #Database model for User
-        class User(db.Model):
-            __tablename__ = "users"
-            id = db.Column('user_id',db.Integer , primary_key=True)
-            username = db.Column('username', db.String(20), unique=True , index=True)
-            password = db.Column('password' , db.String(10))
-            email = db.Column('email',db.String(50),unique=True , index=True)
-            status = db.Column('status', db.String(50), index=True)
-            registered_on = db.Column('registered_on' , db.DateTime)
-            privilegeID = db.Column('privilegeID', db.Integer, db.ForeignKey('privileges.id'))
- 
-            def __init__(self , username ,password , email, privilegeID, status):
-                self.username = username
-                self.password = password
-                self.email = email
-                self.registered_on = datetime.utcnow()
-                self.privilegeID = privilegeID
-                self.status = status
+    {% block content %}
+      <h2>Login</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+      </form>
+    {% endblock %}
 
+    # First we need to Configure the URL routes
+    # We need to import django.contrib.auth.views and add URL route for login and logout views 
 
-        #Login a user
-        @app.route('/login', methods=['GET', 'POST'])
-        def login():
-            
-            # Redirect to login page in GET request
-            if request.method == 'GET':
-                return render_template('login.html')
-            
-            # Intialising username and password
-            username = request.form['inputName']
-            password = request.form['inputPassword']
+    from django.conf.urls import url
+    from django.contrib.auth import views as auth_views
 
-            # Check whether the username is alphanumeric
-            if inputValidation('alphanumeric', username) != True:
-                setLog(0, "invalid expected input", "FAIL", str(datetime.utcnow()), "HIGH")
-                return redirect(url_for('login'))
+    urlpatterns = [
+        url(r'^login/$', auth_views.login, {'template_name': 'core/login.html'} ,name='login'),
+        url(r'^logout/$', auth_views.logout, name='logout'),
+    ]
+    
+    # In settings.py, we can set the location where django will redirect after authentication
+    LOGIN_REDIRECT_URL = 'home'
 
-            # Username and password check   
-            registered_user = User.query.filter_by(username=username).first()
-            if registered_user is None:
-                flash('Username or Password is invalid' , 'error')
-                return redirect(url_for('login'))
+    """
+    There is no need to write login view again, Django has inbuilt view for login.
 
-            # Validate the password hash on bycrypt
-            elif ValidatePassword(registered_user.password, password):
+    Proper input validation is also done in Django auth_view.login takes care for security.
+    
+    But we need to implement a proper logging system for logouts, logins, retries
+    """
 
-                # Logged In successfully
-                login_user(registered_user)
-                flash('Logged in successfully')
-            
-            return render_template('home.html', user=request.form['inputName'])
+    # Logging is also a inbuilt feature in django, only we need to configure it
+    # Add logging system in Settings.py which logs app wise
+
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': 'debug.log',
+            },
+            'applogfile': {
+                'level':'DEBUG',
+                'class':'logging.handlers.RotatingFileHandler',
+
+                # Specify the logging file name
+                
+                'filename': os.path.join(DJANGO_ROOT, 'polls.log'),
+                'maxBytes': 1024*1024*15, # 15MB
+                'backupCount': 10,
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'polls': {
+                'handlers': ['applogfile',],
+                'level': 'DEBUG',
+            },
+        },
+    }
+
+    # Add view for logging, logout, wrong logins in view.py
+
+    import logging
+    from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
+    from django.dispatch import receiver
+
+    # Create your views here.
+    log = logging.getLogger(__name__)
+
+    @receiver(user_logged_in)
+    def user_logged_in_callback(sender, request, user, **kwargs):
+
+        # to cover more complex cases:
+        # http://stackoverflow.com/questions/4581789/how-do-i-get-user-ip-address-in-django
+        ip = request.META.get('REMOTE_ADDR')
+        log.debug('login user: {user} via ip: {ip}'.format(
+            user=user,
+            ip=ip
+        ))
+
+    @receiver(user_logged_out)
+    def user_logged_out_callback(sender, request, user, **kwargs):
+
+        ip = request.META.get('REMOTE_ADDR')
+
+        log.debug('logout user: {user} via ip: {ip}'.format(
+            user=user,
+            ip=ip
+        ))
+
+    @receiver(user_login_failed)
+    def user_login_failed_callback(sender, credentials, **kwargs):
+
+        log.warning('logout failed for: {credentials}'.format(
+            credentials=credentials,
+        ))
