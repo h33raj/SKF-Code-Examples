@@ -9,7 +9,7 @@
     declared in the code and cannot be manipulated by an attacker like example.com?page=dashboard :
     """
 
-    redirect(url_for('dashboard'))
+    redirect('dashboard')
 
     """
     Generally you should avoid getting input into the redirect which could contain
@@ -34,4 +34,4 @@
         if whitelisting(whitelisting, input, count) == True:
             
             # Redirect the Input if whitelisting is correct
-            redirect(url_for(input))
+            redirect(input)
