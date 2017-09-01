@@ -5,146 +5,110 @@
 
 
     """
-    	Whenever you are developing a password forget function, these are the steps to follow
-    	in order to create hardened defenses.
-
-    	 TABLE users
-        -----------------------------------------------------------------
-        | userID   | userName | password |   EmailAdress	 |  access  |
-        -----------------------------------------------------------------   
-        |   1	   | Admin	  | Csdar323 | info@admin.com	 | 	   True |
-        -----------------------------------------------------------------    	
-        |	  2	   | User	  | Adf4fsv  | info@user.com     |     False|
-        -----------------------------------------------------------------    
-        |	  3	   | Guest	  | dff4fKr  | info@guest.com	 |	   True |
-        -----------------------------------------------------------------    
-
-
-        TABLE passwordForget
-        -----------------------------------------------------------------------------------------   
-        | forgotPasswordID | 		Token 	    | 	UserID |   Active	|	  olPasswords	    |
-        -----------------------------------------------------------------------------------------
-        |      1  	 	   | c3ab8ff13720e....  |	  1	   | 	True	|	   Csdar323	      	|
-        -----------------------------------------------------------------------------------------
-        |	   2	 	   | 7dd39466b3c89....  |	  1	   | 	False   |		ef0c4f2         |
-        -----------------------------------------------------------------------------------------
-        |	   3	 	   | 83d4a3960714c....	|	  3	   | 	True	|		dff4fKr	        |
-        -----------------------------------------------------------------------------------------
-
-
-    	As you can see we also store the old passwords into the password forget table, this
-    	we do in order to prevent the user from using old passwords later on in the process.
-
-    	Also use a cron job to make sure the generated tokens for the password reset are
-    	expire after a certain amount of time like 20 minutes.
-
+    	Django has inbuilt feature of password reset. We just have to mentions the URL routes and
+        templates.
     """
 
-    def checkValidity(email):
+    # We need to add django.contrib.auth in INSTALLED_APPS
+    INSTALLED_APPS = [
+        ...
+        'django.contrib.auth',
+    ]
 
-        user = Members.query.filter_by(email=email).first()
+    # Add URL routes for forget password
+    from django.contrib.auth import views as auth_views
 
-        # Here we select the old password as well as the userid from the members table
-        password = user.password
-        userID = user.id
-        email = user.email
+    urlpatterns = [
+        ...
+        url(r'^password_reset/$', auth_views.password_reset, {'template_name': 'polls/password_reset_form.html'} , name='password_reset'),
+        url(r'^password_reset/done/$', auth_views.password_reset_done, {'template_name': 'polls/password_reset_done.html'}, name='password_reset_done'),
+        url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+            auth_views.password_reset_confirm, {'template_name': 'polls/password_reset_confirm.html'} , name='password_reset_confirm'),
+        url(r'^reset/done/$', auth_views.password_reset_complete, {'template_name': 'polls/password_reset_complete.html'} , name='password_reset_complete'),    
+    ]
 
-        # If the select was not empty we will be sending an email to the user as well as 
-        # preparing the password forget function
+    # Template for password_reset_form.html
 
-        if user is None:
-            """
-            We show the user the same message in order to prevent the enumeration of
-            valid email addresses.
-            """
-            return "An email was sent to your email for password reset"
+    {% extends 'base.html' %}
 
-        else:
+    {% block content %}
+      <h3>Forgot password</h3>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+      </form>
+    {% endblock %}
 
-            """
-            Before we do anything we first set all other possible active statuses to NO
-            in order to prevent an attacker creating a whole lot of tokens and than fuzz
-            the password reset token.
-            """
+    # Template for password_reset_subject.txt
 
-            active = False
+    Password reset for Website
 
-            user.active = active
-            db.session.commit()
+    # Template for password_reset_email.html
 
-            # Here we generate the password forget token
-            token = base64.b64encode(rand.bytes(128))
+    {% autoescape off %}
+    To initiate the password reset process for your {{ user.get_username }} TestSite Account,
+    click the link below:
 
-            passwordChange = forgetPassword(token=token, userID=userID, active=active, oldPasswords=password)
-            db.session.add(passwordChange)
-            db.session.commit()            
+    {{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
 
+    If clicking the link above doesn't work, please copy and paste the URL in a new browser
+    window instead.
 
-    		# Here we send an email to the user with the needed reset function
-    		msg = "follow this link to reset your password http://example.com/reset/"" + "token"
-    		mail(email,"Password reset", msg)
+    Sincerely,
+    The TestSite Team
+    {% endautoescape %}
+    
+    # Template for password password_reset_done.html
 
+    {% extends 'base.html' %}
 
-    def resetPassword(resetLink, password):		
+    {% block content %}
+      <p>
+        We've emailed you instructions for setting your password, if an account exists with the email you entered.
+        You should receive them shortly.
+      </p>
+      <p>
+        If you don't receive an email, please make sure you've entered the address you registered with,
+        and check your spam folder.
+      </p>
+    {% endblock %}
 
-    	"""
-    	Imagine the user clicked on his link with the token included and is redirected towards
-    	the page where he can enter his new password.
+    # Template for password_reset_confirm.html
 
-    	Now we select the information from the forgot password function where the
-    	forgot tokens matches the token in the database.
-    	"""
+    {% extends 'base.html' %}
 
-    	active = True
+    {% block content %}
+      {% if validlink %}
+        <h3>Change password</h3>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Change password</button>
+        </form>
+      {% else %}
+        <p>
+          The password reset link was invalid, possibly because it has already been used.
+          Please request a new password reset.
+        </p>
+      {% endif %}
+    {% endblock %}
 
-        data = forgetPassword.query.join(members, forgetPassword.userID==members.userID).filter_by(token=resetLink,Active=active).all()
+    # Template for password_reset_complete.html
 
-        # We select token and users id
-        token = data.token
-        userID = data.userID
+    {% extends 'base.html' %}
 
-        if token == resetLink:
-            
-            """
-            First we pull the password through our function which enforces the input of
-            secure passwords.(see "Enforce secure passwords" in code examples for more
-            detailed information)
-            """
+    {% block content %}
+      <p>
+        Your password has been set. You may go ahead and <a href="{% url 'signin' %}">sign in</a> now.
+      </p>
+    {% endblock %}
 
-            if checkPassword(password) == True:
+    # Setting Up SMTP Email Backend in settings.py
 
-                """
-                Than we encrypt our password
-                (see "Password storage" in code examples for more
-                detailed information)    
-                """
-
-                newPassword = createHash(password)
-    	
-                """
-                Finally we compare the password against other old passwords from the
-                password reset database in order to prevent the user from using old passwords
-                which could already be compromised by any means.
-                """
-    			
-                user = forgetPassword.query.filter_by(userID=userID).first()
-
-                if newPassword == user.oldPasswords:
-
-                    return "This was an old password please do not use this password"
-
-                else:
-                    
-                    # First we update the new password for the user
-                    active = False
-
-                    # Update the details
-                    newUser = members.query.filter_by(userID=userID).first()
-                    newUser.password = newPassword
-
-                    db.session.commit()
-
-                    user.active = active
-                    user.userID = userID
-             
-    				db.session.commit()
+    EMAIL_HOST = 'smtp.sendgrid.net'
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = 'test'
+    EMAIL_HOST_PASSWORD = 'password'
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = 'Test <noreply@example.com>'
