@@ -9,7 +9,7 @@
     identity("page1,page2,etc", "alphanummeric", $_GET['page'], "3")
     """
 
-    def identity(whiteListPattern, validationType, inputParameter, countLevel):
+    def identity(request, whiteListPattern, validationType, inputParameter, countLevel):
 
     	continue = True
 
@@ -46,4 +46,6 @@
 
             countAccess(1)
 
-            data = Table.query.filter_by(id=session['id'], page=inputParameter).first()
+            current_user = request.user
+
+            data = Table.objects.filter(id=current_user.id, page=inputParameter).first()
