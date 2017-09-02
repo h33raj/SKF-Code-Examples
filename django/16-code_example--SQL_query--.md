@@ -38,38 +38,14 @@ SQL query
 
 	"""
 	After adding the application, inorder to make the changes we need to make migrations
-	and migrate
+	and migrate - For creating tables 
 	"""
 
 	$ python manage.py makemigrations
 
 	$ python manage.py migrate
 
-	
-	from flask_sqlalchemy import SQLAlchemy
-	
-	#Will track modifications of objects and emit signals
-	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-	#Database URI is used for connection
-	app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-	#Create object of SQL Alchemy
-	db = SQLAlchemy(app)
-
-	#Class Model that is a declarative base which can be used to declare models
-	class User(db.Model):
-    	id = db.Column(db.Integer, primary_key=True)
-    	username = db.Column(db.String(80), unique=True, nullable=False)
-    	password = db.Column(db.String(120), unique=True, nullable=False)
-
-    	def __repr__(self):	
-        	return '<User %r>' % self.username
-
-    """
-    create the tables and database
-    """
-    from yourapplication import db
-	db.create_all()
-
+	# Needs to be added
 	"""
 	Inserting data into the database - create, add and commit
 	"""
