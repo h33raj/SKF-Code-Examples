@@ -30,9 +30,21 @@
 		if whitelisting(whiteListPattern, inputParameter):
 			continue = False
 
-		# Check for folder Whitelisting
-		if whitelisting(dirWhiteListPattern, folder):
-			continue = False
-
 		if continue == True:
-			return send_from_directory(folder, inputParameter)
+
+			# Create Path
+			path = os.path.join(app.config['UPLOAD_FOLDER'], inputParameter)   
+			images = []
+			
+			# List all the URL
+			for f in os.listdir(path):
+			    if f.endswith("jpg") or f.endswith("png"):
+			        images.append("%s%s/%s" % (app.config['UPLOAD_FOLDER'], inputParameter, f))
+
+			return render_to_response('gallery.html', {'images': images})
+
+	# gallery.html
+
+    {% for image in images %}
+    <img src='{{image}}' />
+    {% endfor %}

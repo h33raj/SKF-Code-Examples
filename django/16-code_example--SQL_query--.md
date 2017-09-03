@@ -84,4 +84,3 @@ SQL query
 	
 		for p in people:
 			print("%s is %s." % (p.first_name, p.age))
-	

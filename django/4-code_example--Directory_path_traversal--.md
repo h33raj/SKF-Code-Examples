@@ -5,20 +5,20 @@
 
 	"""
 	Define the whitelist pattern and validation type and input parameter, countLevel like:
-	getFiles("page1,page2,etc", "alphanummeric", $_GET['filename'], "3")
+	getFiles("page1,page2,etc", "alphanummeric", $_GET['filename'])
 	"""
 
-	def getFiles(whiteListPattern, validationType, inputParameter, dirWhiteListPattern, folder):
-		
-		continue = True
+	def getFiles(request, whiteListPattern, validationType, inputParameter):
 
-		"""
-		First, we want to filter the filenames for expected values. For this example we use only a-z/0-9
+		continue = True
+        
+        """
+		First, we want to filter the filenames for expected values. For this example we use only a-z/0-9 - alphanumeric
 		Whenever the values are tampered with, we can assume an attacker is trying to inject malicious input.
 		for more information about validation see "input validations" in the code examples:
 		"""
-
-		if inputValidation(inputParameter, validationType, "Invalid userinput", "HIGH", countLevel) == False:
+		
+		if inputValidation(inputParameter, validationType) == False:
 			continue = False
 
 		"""
@@ -30,9 +30,19 @@
 		if whitelisting(whiteListPattern, inputParameter):
 			continue = False
 
-		# Check for folder Whitelisting
-		if whitelisting(dirWhiteListPattern, folder):
-			continue = False
+        # Create Path
+        path = os.path.join(settings.MEDIA_ROOT, inputParameter)   
+        images = []
 
-		if continue == True:
-			return send_from_directory(folder, inputParameter)
+        # List all the URL
+        for f in os.listdir(path):
+            if f.endswith("jpg") or f.endswith("png"):
+                images.append("%s%s/%s" % (settings.MEDIA_URL, inputParameter, f))
+        
+        return render_to_response('gallery.html', {'images': images})
+
+    # gallery.html
+
+    {% for image in images %}
+    <img src='{{image}}' />
+    {% endfor %}
