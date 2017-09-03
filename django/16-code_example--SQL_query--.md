@@ -79,9 +79,9 @@ SQL query
 	SQL raw string approach
 	"""
 	
+	if inputValidation(inputParameter, 'alphanumeric') == False:
+		people = Person.objects.raw('SELECT * FROM myapp_person WHERE last_name = %s' % (inputParameter,))
 	
-	people = Person.objects.raw('SELECT * FROM myapp_person WHERE last_name = %s', [lname])
-	
-	for p in people:
-		print("%s is %s." % (p.first_name, p.age))
+		for p in people:
+			print("%s is %s." % (p.first_name, p.age))
 	

@@ -57,10 +57,10 @@ SQL query
 
 	from sqlalchemy import text
 
-	# Protection from string interpolation attack
-	sql = text("select name from penguins where id =%s" % (name,) )
+	if inputValidation(inputParameter, 'alphanumeric') == False:
+		# Protection from string interpolation attack
+		sql = text("select name from penguins where id =%s" % (inputParameter,) )
 	
-	result = db.engine.execute(sql)
+		result = db.engine.execute(sql)
 
-	print result[0]
-
+		print result[0]
