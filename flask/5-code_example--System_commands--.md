@@ -22,7 +22,7 @@
 		for more information about validation see "input validations" in the code examples:
 		"""
 
-		if inputValidation(inputParameter, validationType, "Invalid userinput for system commands", "HIGH") == False:
+		if inputValidation(inputParameter, validationType) == False:
 			continue = False
 
 			"""

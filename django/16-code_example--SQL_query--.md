@@ -75,16 +75,13 @@ SQL query
 	instance = Publisher.objects.filter(name=name).all()
 	instance.address
 
-REMARK Glenn: Also add raw SQL string and approach, check best practise on this site, bind userinput to columns 
-https://www.quantifiedcode.com/knowledge-base/security/Prevent%20SQL%20injections%20by%20avoiding%20string%20interpolations/3cObiWuF
-
 	"""
 	SQL raw string approach
 	"""
-	from sqlalchemy import text
-
-	sql = text('select name from penguins')
-	result = db.engine.execute(sql)
-
-	print result[0]
-
+	
+	
+	people = Person.objects.raw('SELECT * FROM myapp_person WHERE last_name = %s', [lname])
+	
+	for p in people:
+		print("%s is %s." % (p.first_name, p.age))
+	
