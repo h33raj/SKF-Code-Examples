@@ -66,6 +66,10 @@ File upload
     	ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
     	valid_extensions = ['.jpg', '.png']
     	if not ext.lower() in valid_extensions:
+            log.error('Wrong Extension Uploaded: {user} via ip: {ip}'.format(
+                user=user,
+                ip=ip
+            ))
         	raise ValidationError(u'Unsupported file extension.')
 
     # Create a forms.py which will process the forms
@@ -102,5 +106,5 @@ File upload
     	else:
         	form = DocumentForm()
     	return render(request, 'app/upload.html', {
-        'form': form
+            'form': form
     	})

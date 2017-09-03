@@ -3,8 +3,6 @@
 
 ## Example:
 
-REMARK Glenn: Looks good, please also add output encoding for HTML and JSON, check HTML en JSON Entity encoding https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet#HTML_entity_encoding
-
     """
     Whenever user input is displayed in the application, whether, as content or a parameter value
     submitted towards the url, all user input should be properly escaped to prevent XSS injections.
@@ -21,6 +19,19 @@ REMARK Glenn: Looks good, please also add output encoding for HTML and JSON, che
         admin = User.query.filter_by(username='admin').first()
         return escape(admin.email)
     
+    # For removing dangerous characters : 
+
+    wordDict = {'&': '&amp;', '<' : '&lt;', '>' : '&gt;' , '"' : '&quot;', "'" : '&#x27;', '/' : &#x2F;, '\' : '\\'}
+
+    for key in wordDict:
+        input = input.replace(key, wordDict[key])
+
+    # For UNTRUSTED DATA in <a href="/site/search?value=UNTRUSTED DATA">clickme</a>
+    # URL Encoding for defense
+
+    import urllib
+    input = urllib.quote_plus(input)
+
     """
     Security consists of different layers of protection, in order to guarantee the integrity
     of your application. This means that the value submitted from the user should
