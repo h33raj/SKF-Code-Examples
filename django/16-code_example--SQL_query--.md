@@ -20,10 +20,17 @@ SQL query
 
 	from django.db import models
 
-	class Person(models.Model):
-    	first_name = models.CharField(max_length=30)
-    	last_name = models.CharField(max_length=30)
+	class Publisher(models.Model):
 
+   		name = models.CharField(max_length=30)
+   		address = models.CharField(max_length=50)
+
+		def __str__(self):
+
+    		return ' '.join([
+        		self.name,
+        		self.address,
+    		])
 
     """
     In order to add your model to django, you have to add the app in INSTALLED_APP
@@ -46,25 +53,27 @@ SQL query
 	$ python manage.py migrate
 
 	# Needs to be added
+
 	"""
 	Inserting data into the database - create, add and commit
 	"""
-	admin = User(username='admin', password='9u3$$_m3_1f_y0u_C@n')
-	db.session.add(admin)
-	db.session.commit()
+	
+	book = Publisher(name=p1, address=p2)
+	book.save()
 
 	"""
 	Delete entries from the table
 	"""
-	db.session.delete(admin)
-	db.session.commit()
+	
+	instance = Publisher.objects.get(name=name)
+	instance.delete()
 
 	"""
 	Querying Records
 	"""
 	#Retrieve the user with username
-	admin = User.query.filter_by(username='admin').first()
-	admin.id
+	instance = Publisher.objects.filter(name=name).all()
+	instance.address
 
 REMARK Glenn: Also add raw SQL string and approach, check best practise on this site, bind userinput to columns 
 https://www.quantifiedcode.com/knowledge-base/security/Prevent%20SQL%20injections%20by%20avoiding%20string%20interpolations/3cObiWuF
