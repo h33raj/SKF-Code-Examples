@@ -30,6 +30,8 @@
             # Setting the user Id
             session['id'] = user.id
 
+            return True
+
         else:
 
             # The user failed re-authenticating himself
@@ -41,7 +43,7 @@
             session.regenerate()
             session['access'] = ""
 
-            return render_template('login.html')
+            return False
 
 
     """
@@ -49,7 +51,7 @@
     himself. imagine the following scenario, the user wants to change his email address.
     """
 
-    if reauthenticate(password) !== true :
+    if reauthenticate(password) !== True :
 
         return "<div id='error'>please reauthenticate yourself<div>"\
     	+ "<form method='post'>"\

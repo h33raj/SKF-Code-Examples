@@ -9,55 +9,52 @@
     allowing them to perform these actions.
     """
     
-    def reauthenticate(password):
-        user = User.query.filter_by(id=session['id']).first()
+    from django.contrib.auth import authenticate, login
 
-        # Validation of password in bycrypt encryption
-        if ValidatePassword(user.password, password):
+    def reauthenticate(request, password):
+
+        # Access current_user
+        current_user = request.user
+        username = current_user.username
+
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+
+        # Validation of password 
+        if user is not None:
 
             # After successful validation we will log that password was validated successfully
-            setLog(session['id'], "Password return true", "SUCCESS", str(datetime.utcnow()), session['privilege'], "NULL")
+            log.info('Succeessful reauthentication user : {user} via ip: {ip}'.format(
+                user=user,
+                ip=ip
+            ))
 
-            # Here we set a session to see if the user is authenticated throughout the system
-            session['access'] = 'active'
+            # Make the current_user active
+            current_user.is_active = 1
 
-            """
-            The userID in a session variable to use as an identifier to prevent a user reading
-            into unauthorized data, See Identifier-based authorization for more information and
-            code examples.
-            """
+            # Save the session ID 
+            login(request, user)
 
-            # Setting the user Id
-            session['id'] = user.id
+            # Sucess page 
+            return render(request, 'polls/home.html')
 
         else:
 
             # The user failed re-authenticating himself
-            setLog(session['id'], "Re-authentication failed", "FAIL", str(datetime.utcnow()), "null", "MOD")
+            log.warning('Reauthentication Failed!! user : {user} via ip: {ip}'.format(
+                user=user,
+                ip=ip
+            ))
 
             # If authentication failed destroyed the session
-            session.destroy()
+            request.session.flush()
 
-            session.regenerate()
-            session['access'] = ""
-
-            return render_template('login.html')
-
+            return render(request, 'polls/login.html')
 
     """
     Before we let a user perform certain actions he should first be challenged to authenticate
     himself. imagine the following scenario, the user wants to change his email address.
     """
 
-    if reauthenticate(password) !== true :
-
-        return "<div id='error'>please reauthenticate yourself<div>"\
-    	+ "<form method='post'>"\
-    	+ "<input type='password' name='password'/>"\
-    	+ "<input type='submit' name='authenticate'/>"\
-    	+ "</form>"
-
-    else:
-    	# Do operation for changing the email address
-    	return "<div id='success'>You can now change your email address!</div>";
-
+    # Usage Example
+    reauthenticate(password) 
