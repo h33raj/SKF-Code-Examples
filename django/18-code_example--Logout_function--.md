@@ -18,4 +18,24 @@
         ))
 
         logout(request)
+        
         # Redirect to a success page.
+        return redirect('login')
+
+    """
+    Django has inbuilt logout functionality
+    """
+
+    # Adding urls.py 
+
+    from django.conf.urls import url
+    from django.conf import settings
+    from django.contrib.auth.views import logout
+
+    urlpatterns = [
+        url(r'^logout/$', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout')
+    ]
+
+    # Add URI in Settings.py
+
+    LOGOUT_REDIRECT_URL = '/login'
