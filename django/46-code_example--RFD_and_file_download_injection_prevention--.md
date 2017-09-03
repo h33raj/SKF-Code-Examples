@@ -3,7 +3,14 @@
 
 ## Example:
 
-	def downloadUserFiles(fileId):
+	import os
+	from django.conf import settings
+	from django.http import HttpResponse
+
+	def downloadUserFiles(request, fileId):
+		
+		# Current_user
+		current_user = request.user
 		
 		proceed = True
 
@@ -17,7 +24,7 @@
 			proceed = False
 
 		if proceed = True:
-			file = Download.query.filter_by(fileId=password, userId=session['id']).first()
+			file = Download.objects.filter(fileId=password, userId=current_user.id).first()
 
 			filename = file.fileName
 			mimeType = file.mimeType
@@ -34,37 +41,36 @@
 				itself after it was stored on the server.
 				"""
 
-				response = Response(open(app.config['UPLOAD_FOLDER'] + filename).read())
-				response.headers["Content-Description"] = "File Transfer"
-				response.headers["Content-type"] = mimeType
-				response.headers["Content-Disposition"] = "attachment; filename=" + filename
-				response.headers["Expires"] = 0
-				response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-				response.headers["Cache-Control"] = "post-check=0, pre-check=0", false
-
-				if os.path.exists(app.config['UPLOAD_FOLDER'] + filename):
-        			return response
+				file_path = os.path.join(settings.MEDIA_ROOT, filename)
+				if os.path.exists(file_path):
+					with open(file_path, 'rb') as fh:
+						response = HttpResponse(fh.read(), content_type=mimeType)
+						response["Content-Description"] = "File Transfer"
+						response["Content-Disposition"] = "attachment; filename=" + filename
+						response["Expires"] = 0
+						response["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+						response["Cache-Control"] = "post-check=0, pre-check=0", false
+						return response
+				raise Http404
 
 	"""
-		The seccond example is for whenever you are providing users with fixed downloads
-		such as manuals etc. We do not only check if the file just exists, because that would
-		allow an attacker to also download important other files from your server, so instead
-		we whitelist them.
+	The seccond example is for whenever you are providing users with fixed downloads
+	such as manuals etc. We do not only check if the file just exists, because that would
+	allow an attacker to also download important other files from your server, so instead
+	we whitelist them.
 	"""
 	
 	def downloadStored(filename):
-
-		response = Response(open(app.config['UPLOAD_FOLDER'] + filename).read())
-
-		if whitelisting("file1.txt,file2.txt", $filename) != False:
-			response.headers["Content-Description"] = "File Transfer"
-			response.headers["Content-type"] = 'text/plain'
-			response.headers["Content-Disposition"] = "attachment; filename=" + filename
-			response.headers["Expires"] = 0
-			response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-			response.headers["Cache-Control"] = "post-check=0, pre-check=0", false
-			response.headers["Content-Length"] = os.path.getsize(filename)
-
-			if os.path.exists(app.config['UPLOAD_FOLDER'] + filename):
-        			return response
-			
+		if os.path.exists(file_path):
+					with open(file_path, 'rb') as fh:
+				
+						if whitelisting("file1.txt,file2.txt", $filename) != False:
+							response = HttpResponse(fh.read(), content_type='text/plain')
+							response.headers["Content-Description"] = "File Transfer"
+							response.headers["Content-Disposition"] = "attachment; filename=" + filename
+							response.headers["Expires"] = 0
+							response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+							response.headers["Cache-Control"] = "post-check=0, pre-check=0", false
+							response.headers["Content-Length"] = os.path.getsize(filename)
+							return response
+		raise HTTP404

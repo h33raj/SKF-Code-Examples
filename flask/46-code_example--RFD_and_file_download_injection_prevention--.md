@@ -17,7 +17,7 @@
 			proceed = False
 
 		if proceed = True:
-			file = Download.query.filter_by(fileId=password, userId=session['id']).first()
+			file = Download.query.filter_by(fileId=fileId, userId=session['id']).first()
 
 			filename = file.fileName
 			mimeType = file.mimeType
