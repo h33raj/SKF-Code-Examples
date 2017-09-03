@@ -3,13 +3,12 @@
 
 ## Example:
 
-REMARK Glenn: Rebuild the code below and show/create a function that can retrieve a file from different folders
 	"""
 	Define the whitelist pattern and validation type and input parameter, countLevel like:
 	getFiles("page1,page2,etc", "alphanummeric", $_GET['filename'], "3")
 	"""
 
-	def getFiles(whiteListPattern, validationType, inputParameter, countLevel):
+	def getFiles(whiteListPattern, validationType, inputParameter, dirWhiteListPattern, folder):
 		
 		continue = True
 
@@ -27,8 +26,13 @@ REMARK Glenn: Rebuild the code below and show/create a function that can retriev
 		page1,page2 etc.. for more information about whitelisting see "white-listing" in the code examples:
 		"""
 
+		# Check for filename Whitelisting
 		if whitelisting(whiteListPattern, inputParameter):
 			continue = False
 
-		if continue == False:
-			return send_from_directory(app.config['UPLOAD_FOLDER'], inputParameter)
+		# Check for folder Whitelisting
+		if whitelisting(dirWhiteListPattern, folder):
+			continue = False
+
+		if continue == True:
+			return send_from_directory(folder, inputParameter)
