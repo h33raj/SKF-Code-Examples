@@ -8,25 +8,45 @@ REMARK Glenn: Looks good, please also add output encoding for HTML and JSON, che
     """
     Whenever user input is displayed in the application, whether, as content or a parameter value
     submitted towards the url, all user input should be properly escaped to prevent XSS injections.
+    
+    Django has automatic HTML escaping, 5 characters are escaped : 
+    < is converted to &lt;
+    > is converted to &gt;
+    ' (single quote) is converted to &#39;
+    " (double quote) is converted to &quot;
+    & is converted to &amp;
     """
 
-    #For normal output this escaping will do the trick
-    from flask import escape
-    @app.route('/', methods=['GET', 'POST'])
-    def index():
-        return escape(request.form['name'])
+    # If data = "<b>"
 
-    #This also applies, for instance, when retrieving content from a database:
-    @app.route('/')
-        admin = User.query.filter_by(username='admin').first()
-        return escape(admin.email)
-    
+    # Template to show HTML escaping
+    This will be escaped: {{ data }}
+    This will not be escaped: {{ data|safe }}
+
+    # Output for HTML escaping
+    This will be escaped: &lt;b&gt;
+    This will not be escaped: <b>
+
+    # For removing dangerous characters : 
+
+    wordDict = {'&': '&amp;', '<' : '&lt;', '>' : '&gt;' , '"' : '&quot;', "'" : '&#x27;', '/' : &#x2F;, '\' : '\\'}
+
+    for key in wordDict:
+        input = input.replace(key, wordDict[key])
+
+    # For UNTRUSTED DATA in <a href="/site/search?value=UNTRUSTED DATA">clickme</a>
+    # URL Encoding for defense
+
+    import urllib
+    input = urllib.quote_plus(input) 
+
     """
     Security consists of different layers of protection, in order to guarantee the integrity
     of your application. This means that the value submitted from the user should
     already be sanitized before being submitted towards the database in order to prevent XSS.
     As an example, you are expecting only alphanumerical value here:
     """
+    
     match = re.findall("^[a-zA-Z0-9]+$", value)
     if match:
         return True

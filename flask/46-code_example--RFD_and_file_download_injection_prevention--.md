@@ -7,12 +7,10 @@
 		
 		proceed = True
 
-		response = Response(open(app.config['UPLOAD_FOLDER'] + filename).read())
-
 		"""
-			For the sake of example we only allow the users to download their own files
-			by identifier based sql query's. As you can see we select the filename
-			by its id. in this case we prevent direct userinput into the disposition header.
+		For the sake of example we only allow the users to download their own files
+		by identifier based sql query's. As you can see we select the filename
+		by its id. in this case we prevent direct userinput into the disposition header.
 		"""
 
 		if inputValidation(fileId, "numeric", "validate was false", "HIGH", 3) == False:
@@ -36,6 +34,7 @@
 				itself after it was stored on the server.
 				"""
 
+				response = Response(open(app.config['UPLOAD_FOLDER'] + filename).read())
 				response.headers["Content-Description"] = "File Transfer"
 				response.headers["Content-type"] = mimeType
 				response.headers["Content-Disposition"] = "attachment; filename=" + filename
@@ -47,10 +46,10 @@
         			return response
 
 	"""
-		The seccond example is for whenever you are providing users with fixed downloads
-		such as manuals etc. We do not only check if the file just exists, because that would
-		allow an attacker to also download important other files from your server, so instead
-		we whitelist them.
+	The seccond example is for whenever you are providing users with fixed downloads
+	such as manuals etc. We do not only check if the file just exists, because that would
+	allow an attacker to also download important other files from your server, so instead
+	we whitelist them.
 	"""
 	
 	def downloadStored(filename):
