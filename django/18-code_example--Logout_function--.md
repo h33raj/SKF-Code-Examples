@@ -11,5 +11,11 @@
 
     def logout_view(request):
         
+        # Logging logout
+        log.info('Logout Successful : {user} via ip: {ip}'.format(
+            user=user,
+            ip=ip
+        ))
+
         logout(request)
         # Redirect to a success page.

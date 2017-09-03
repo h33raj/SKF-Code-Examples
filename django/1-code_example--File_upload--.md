@@ -63,13 +63,20 @@ File upload
     from django.core.exceptions import ValidationError	
 
     def validate_file_extension(value):
-    	ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
-    	valid_extensions = ['.jpg', '.png']
-    	if not ext.lower() in valid_extensions:
+        # [0] returns path+filename
+    	ext = os.path.splitext(value.name)[1]  
+    	
+        # Adding valid extensions
+        valid_extensions = ['.jpg', '.png']
+    	
+        if not ext.lower() in valid_extensions:
+            
+            # Adding logging for extension error
             log.error('Wrong Extension Uploaded: {user} via ip: {ip}'.format(
                 user=user,
                 ip=ip
             ))
+
         	raise ValidationError(u'Unsupported file extension.')
 
     # Create a forms.py which will process the forms
@@ -100,9 +107,21 @@ File upload
     def model_form_upload(request):
     	if request.method == 'POST':
         	form = DocumentForm(request.POST, request.FILES)
-        	if form.is_valid():
+        	
+            # Check whether the form is valid
+            if form.is_valid():
+
+                # Save the form data
             	form.save()
-            	return redirect('home')
+
+                # Upload Successful
+                log.info('Uploaded Successful : {user} via ip: {ip}'.format(
+                    user=user,
+                    ip=ip
+                ))
+            	
+                return redirect('home')
+
     	else:
         	form = DocumentForm()
     	return render(request, 'app/upload.html', {
