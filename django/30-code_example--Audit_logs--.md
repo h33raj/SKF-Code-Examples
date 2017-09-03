@@ -5,58 +5,73 @@
 
 
     """
-    The log function does not have to be complicated as long as you log at least these 6 values
+    Django uses Python’s builtin logging module to perform system logging. 
 
-    Whenever a user is registered or added to your system, the application must also
-    automatically generate a table for this user which contains his userID, counter and blocker
-    variable in order to keep track of his behavior.
+    Python logging configurations consists of four parts:
+
+     - Loggers : is configured to have log level. Different log levels are DEBUG, INFO, 
+                 WARNING, ERROR, CRITICAL. Each message that is written to the logger is a Log Record.
+     - Handlers : It describes particular logging behaviour such as writing message on the screen, a file or to network socket.  
+     - Filters : We can place an additional criteria for logging process.
+     - Formatters : Formatters describe the exact format of that text.
     """
 
-REMARK Glenn: Please check the ASVS audit log section for what to log for example i miss the IP of the user. Also needs more comments about what the threat is like LOW, MEDIUM, HIGH. Also value should be message for example: User triggered search function
+    # Using Logging
+    # import the logging library
+    
+    import logging
 
-        def setLog(userId, error, value, date, threat):
+    # Get an instance of a logger
+    logger = logging.getLogger(__name__)
 
-            """
+    def my_view(request, arg1, arg):
+        ...
+        if bad_mojo:
+            # Log an error message
+            logger.error('Something went wrong!') 
 
-            """
-            
-            #Take the client's IP address
-            ip = request.remote_addr
-
-            #Save log file in a directory which has restrictions in place so no one can 
-            file = "restrictedfolder/logfile.txt"
-            f = open(file, 'w+')
-            
-            #Notice how we user the userID instead of the actual username in order to prevent the integrity of these usernames
-            f.write(date + str(userId) + error + value + threat + "Ip : " + str(ip))
-            f.close()
+    """
+    Different logging calls : 
+        - logger.debug()
+        - logger.info()
+        - logger.warning()
+        - logger.error()
+        - logger.critical()
+        - logger.log()
+        - logger.exception()
+    """
 
 
-        class Counter(db.Model):
-            __tablename__ = "counter"
-            count = db.Column(db.Integer, nullable=False)
-            blocker = db.Column(db.Integer, nullable=False)
-            userID = db.Column('userID', db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
-
-            def __init__(self, count, blocker, userID):
-                self.count = count 
-                self.blocker = blocker
-                self.userID = userID
-
-            def increment(self, count):
-                self.count+= count
-                self.blocker+= count
-
-                if self.counter >= 3:
-                    setLog(self.userId,"The users session was terminated", "SUCCESS", datetime.utcnow(), "NULL")
-                    #After the counter has terminated a session he should be set to zero again
-                    self.count = 0
-                    #Log that the users sessions have been terminated
-                    logout()
-
-                if self.blocker >= 12:
-                    #If the blocker was bigger than 12 it means the user has made three strikes and his account should blocked
-                    setLog(self.userId,"The users is denied access to system", "SUCCESS", datetime.utcnow(), "NULL")
-                    user = User.query.filter_by(id=self.userID).first()
-                    user.status = 'Blocked'
-
+    # Configuring loggers with app in SETTNGS.PY
+    """
+    This creates polls app log file polls.log
+    """
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': 'debug.log',
+            },
+            'applogfile': {
+                'level':'DEBUG',
+                'class':'logging.handlers.RotatingFileHandler',
+                'filename': os.path.join(DJANGO_ROOT, 'polls.log'),
+                'maxBytes': 1024*1024*15, # 15MB
+                'backupCount': 10,
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'polls': {
+                'handlers': ['applogfile',],
+                'level': 'DEBUG',
+            },
+        },
+    }
