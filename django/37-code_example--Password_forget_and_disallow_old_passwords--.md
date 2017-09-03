@@ -28,7 +28,7 @@
     ]
 
     # Template for password_reset_form.html
-
+    
     {% extends 'base.html' %}
 
     {% block content %}
