@@ -73,7 +73,7 @@
         },
     }
 
-    # Example for logging  error
+    # Example for logging error
     
     import logging
 

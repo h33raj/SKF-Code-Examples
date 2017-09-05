@@ -39,7 +39,7 @@
             """
 
             # Check for filename Whitelisting
-            if whitelisting(whiteListPattern, inputParameter):
+            if whitelisting(whiteListPattern, inputParameter) == False:
                 continue = False
 
             if continue == True:
@@ -53,6 +53,9 @@
                         images.append("%s%s/%s" % (settings.MEDIA_URL, inputParameter, f))
                 
                 return render_to_response('gallery.html', {'images': images})
+
+            else:
+                return render_to_response('gallery.html', {'images': ''})                
 
         # gallery.html
 

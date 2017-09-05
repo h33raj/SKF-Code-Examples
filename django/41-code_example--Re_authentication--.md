@@ -29,6 +29,9 @@
                 ip=ip
             ))
 
+            # Flush Session token 
+            request.session.flush()
+
             # Make the current_user active
             current_user.is_active = 1
 
