@@ -80,7 +80,7 @@ SQL query
 	"""
 	
 	if inputValidation(inputParameter, 'alphanumeric') == False:
-		people = Person.objects.raw('SELECT * FROM myapp_person WHERE last_name = %s' % (inputParameter,))
+		people = Person.objects.raw('SELECT * FROM myapp_person WHERE last_name = %s', [inputParameter])
 	
 		for p in people:
 			print("%s is %s." % (p.first_name, p.age))
