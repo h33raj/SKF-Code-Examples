@@ -3,74 +3,56 @@
 
 ## Example:
 
-
   """
-    For privilege based authentication we will use the table users.
+    For privilege based authentication we will use the table permissions.
 
-    TABLE users
+    TABLE permissions
     
       ------------------------------------------------------------
-      |      *Name*      |  *Type*              |    *Extra*     |
+      |          *Name*      |  *Type*          |    *Extra*     |
       ------------------------------------------------------------
-      |        ID        |    Int(11)           | AUTO_INCREMENT |
+      |            ID        |    Int(11)       | AUTO_INCREMENT |
       ------------------------------------------------------------
-      |       Username       |    char(21)      |                |
+      |   content_type_id    |    Int(11)       |                |
       ------------------------------------------------------------
-      |       Password       |  Varchar(255)    |                |
+      |      codename        |  Varchar(255)    |                |
       ------------------------------------------------------------
-      |      last_login      |    date          |                |
-      ------------------------------------------------------------   
-      |      is_superuser    |    int(1)        |                |
+      |      name            |    varchar(30)   |                |
       ------------------------------------------------------------
-      |      first_name      |    varchar(30)   |                |
-      ------------------------------------------------------------
-      |      last_name       |    varchar(30)   |                |
-      ------------------------------------------------------------
-      |      email           |    varchar(30)   |                |
-      ------------------------------------------------------------
-      |      is_staff        |    int(1)        |                |
-      ------------------------------------------------------------
-      |      is_active       |    int(1)        |                |
-      ------------------------------------------------------------
-      |      date_joined     |    date          |                |
-      ------------------------------------------------------------ 
 
-    Now instead of using roles in sessions we rather want to assign privileges to users
-    by means of a Database-Based Authentication system.
-    Now we can easily assign a user certain privileges for him to access.
+    Permissions are associated with models, and define the operations that can be performed on a model instance by a user who has the permission . Django automatically gives add, change, and delete permissions to all models by default.
   """
 
+  # Adding certain privileges to user
+
+  # Selecting particular User and adding permission
+  user = User.objects.filter(username='user1').first()
+  user.user_permissions = [Permission.objects.get(codename='change_choice')]
+
   """
-  Django has inbuilt privilege based approach. Different privileges for django users table
-  is superuser, staff, user.
-
-  superuser has the most permission, then staff and at last the user
-  """
-
-  def isAuthorized(request):
-
-    # Select current user 
-    current_user = request.user
-
-    if current_user.is_superuser == 1 or current_user.is_staff:
-      
-      # Log the successful authorization
-      log.debug('User is privileged: {user} via ip: {ip}'.format(
-            user=user,
-            ip=ip
-      ))
-      return True
-    
-    else:
-
-      # Log the unsuccessful authorization
-
-      log.warning('User is not privileged: {user} via ip: {ip}'.format(
-            user=user,
-            ip=ip
-      ))
-      
-      # Set counter
+  Permissions can be checked in both templates and views.
   
-      return False
+  In templates, Current user's permission are checked in template variable {{ perms }}
+
+  In Views, Permissions can be tested in function view using the permission_required decorator or in class based view we can use PermissionRequiredMixin
+  """
   
+  # In templates
+
+  {% if perms.polls.change_choice %}
+    <!-- Add appropriate code. -->
+  {% endif %}
+
+  # In Views 
+  @permission_required('polls.change_choice')
+  @permission_required('polls.can_edit')
+  def my_view(request):
+    ...
+
+  # Permission-required for class based views
+
+  from django.contrib.auth.mixins import PermissionRequiredMixin
+
+  class MyView(PermissionRequiredMixin, View):
+      permission_required = 'catalog.can_mark_returned'
+      ...

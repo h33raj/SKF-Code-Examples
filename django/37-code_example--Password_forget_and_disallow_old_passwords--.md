@@ -5,8 +5,8 @@
 
 
     """
-    	Django has inbuilt feature of password reset. We just have to mentions the URL routes and
-      templates.
+    Django has inbuilt feature of password reset. We just have to mentions the URL routes and
+    templates.
     """
 
     # We need to add django.contrib.auth in INSTALLED_APPS
