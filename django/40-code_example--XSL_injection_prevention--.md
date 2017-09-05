@@ -19,14 +19,14 @@
 		including("file1.xsl,file2.xsl,etc", $_GET['xslfile'], "3")
 	"""
 
-REMARK Glenn: Add the validation checks here too in the method, and whitelisting should be done on static values, a list
 	def including(whiteListing, input, count):
 
 		continue = True
 
 		"""
 		We want to whitelist the paged for expected values, in this example they are,
-		page1,page2 etc.. for more information about whitelisting see "white-listing" in the code examples:
+		page1,page2 etc.. for more information about whitelisting see "white-listing"
+		in the code examples:
 		"""
 
 		if whitelisting(whiteListing, input, count) == False:
@@ -34,6 +34,7 @@ REMARK Glenn: Add the validation checks here too in the method, and whitelisting
 
 		# If all went good we do the function
 		if continue == True:
+			
 			#Load XML file
 			root = etree.parse("test.xml")
 
@@ -42,3 +43,9 @@ REMARK Glenn: Add the validation checks here too in the method, and whitelisting
 
 			# Transform the XML
 			result_tree = transform(root)
+
+			return result_tree
+
+		else:
+
+			return False

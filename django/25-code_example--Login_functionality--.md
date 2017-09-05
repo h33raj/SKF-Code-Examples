@@ -110,15 +110,16 @@
     from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
     from django.dispatch import receiver
 
-    # Create your views here.
+    # Create your views for logging
     log = logging.getLogger(__name__)
 
     @receiver(user_logged_in)
     def user_logged_in_callback(sender, request, user, **kwargs):
 
-        # to cover more complex cases:
-        # http://stackoverflow.com/questions/4581789/how-do-i-get-user-ip-address-in-django
+        # Track the IP
         ip = request.META.get('REMOTE_ADDR')
+
+        # Logging the details 
         log.debug('login user: {user} via ip: {ip}'.format(
             user=user,
             ip=ip
