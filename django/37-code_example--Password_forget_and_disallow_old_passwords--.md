@@ -6,7 +6,7 @@
 
     """
     	Django has inbuilt feature of password reset. We just have to mentions the URL routes and
-        templates.
+      templates.
     """
 
     # We need to add django.contrib.auth in INSTALLED_APPS
@@ -46,7 +46,7 @@
 
     # Template for password_reset_email.html
 
-    {% autoescape off %}
+    {% autoescape %}
     To initiate the password reset process for your {{ user.get_username }} TestSite Account,
     click the link below:
 
