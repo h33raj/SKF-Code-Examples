@@ -7,6 +7,14 @@
     """
     Django uses Python’s builtin logging module to perform system logging. 
 
+    Methods which should be logged : 
+        - Data Addition
+        - Data modification
+        - Data deletion
+        - Data Exports
+        - Identifying security incidents
+        - Perfomance monitoring etc
+
     Python logging configurations consists of four parts:
 
      - Loggers : is configured to have log level. Different log levels are DEBUG, INFO, 
@@ -16,22 +24,11 @@
      - Formatters : Formatters describe the exact format of that text.
     """
 
-    # Using Logging
-    # import the logging library
-    
-    import logging
-
-    # Get an instance of a logger
-    logger = logging.getLogger(__name__)
-
-    def my_view(request, arg1, arg):
-        ...
-        if bad_mojo:
-            # Log an error message
-            logger.error('Something went wrong!') 
-
     """
-    Different logging calls : 
+
+    logger is inbuilt class in django for logging system information into files or sending logs through network.
+
+    Different logging calls or mehtods : 
         - logger.debug()
         - logger.info()
         - logger.warning()
@@ -75,3 +72,30 @@
             },
         },
     }
+
+    # Example for logging  error
+    
+    import logging
+
+    # Get an instance of a logger
+    logger = logging.getLogger(__name__)
+
+    def my_view(request, arg1, arg):
+        ...
+        if bad_mojo:
+            # Log an error message
+            logger.error('Something went wrong!') 
+
+
+    # Example for logging critical
+
+    import logging
+
+    # Get an instance of a logger
+    logger = logging.getLogger(__name__)
+
+    def my_view(request, arg1, arg):
+        ...
+        if security_violation:
+            # Log an critical message
+            logger.critical('Security violation!')
