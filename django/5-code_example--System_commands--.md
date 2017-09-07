@@ -32,10 +32,8 @@
 
 		if whitelisting(whiteListPattern, inputParameter) == False:
 			continue = False
-
-		# If all went good we include the filename
+		//If all went good we include the filename
 		if continue == True:
-
-			# Even though there is match we still escape the shelx.quote():
+			//Even though there is match we still escape the shelx.quote():
 			command = './configure {}' .format(quote(inputParameter))
 			os.system(command)

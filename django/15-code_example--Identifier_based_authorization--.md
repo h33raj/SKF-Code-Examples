@@ -45,7 +45,6 @@
     		"""
 
             countAccess(1)
-
             current_user = request.user
 
             data = Table.objects.filter(id=current_user.id, page=inputParameter).first()
