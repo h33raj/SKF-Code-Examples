@@ -3,6 +3,7 @@
 
 ## Example:
 
+
     """
     This is the encoder class for whenever you have to allow certain
     possibly dangerous characters into your code for i.e names such as O'reily
@@ -34,11 +35,9 @@
 	        
 	        counter.increment()
 	        flag = False
-
-	        # Remove Dangerous Characters
+	        //Remove Dangerous Characters
 	        wordDict = {'&': '&amp;', '<' : '&lt;', '>' : '&gt;' , '"' : '&quot;', "'" : '&#x27;', '/' : &#x2F;, '\' : '\\'}
 
 	        for key in wordDict:
 	        	input = input.replace(key, wordDict[key])
-
 	        return input

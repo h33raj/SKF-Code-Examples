@@ -32,6 +32,5 @@
         """
 
         if whitelisting(whitelisting, input, count) == True:
-            
-            # Redirect the Input if whitelisting is correct
+            //Redirect the Input if whitelisting is correct
             redirect(input)

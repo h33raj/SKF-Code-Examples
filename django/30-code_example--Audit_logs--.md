@@ -22,11 +22,8 @@
      - Handlers : It describes particular logging behaviour such as writing message on the screen, a file or to network socket.  
      - Filters : We can place an additional criteria for logging process.
      - Formatters : Formatters describe the exact format of that text.
-    """
 
-    """
-
-    logger is inbuilt class in django for logging system information into files or sending logs through network.
+    The logger module is inbuilt class in django for logging system information into files or sending logs through network.
 
     Different logging calls or mehtods : 
         - logger.debug()
@@ -38,8 +35,7 @@
         - logger.exception()
     """
 
-
-    # Configuring loggers with app in SETTNGS.PY
+    //Configuring loggers with app in SETTNGS.PY
     """
     This creates polls app log file polls.log
     """
@@ -73,7 +69,7 @@
         },
     }
 
-    # Get Client IP
+    //Get Client IP
 
     def get_client_ip(request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -83,29 +79,27 @@
             ip = request.META.get('REMOTE_ADDR')
         return ip
 
-    # Example for logging error
-    
+    //Example for logging error
     import logging
 
-    # Get an instance of a logger
+    //Get an instance of a logger
     logger = logging.getLogger(__name__)
 
     def my_view(request, arg1, arg):
         ...
         if bad_mojo:
-            # Log an error message
+            //Log an error message
             logger.error('Something went wrong!' + get_client_ip(request)) 
 
 
-    # Example for logging critical
-
+    //Example for logging critical
     import logging
 
-    # Get an instance of a logger
+    //Get an instance of a logger
     logger = logging.getLogger(__name__)
 
     def my_view(request, arg1, arg):
         ...
         if security_violation:
-            # Log an critical message
+            //Log an critical message
             logger.critical('Security violation!' + get_client_ip(request))

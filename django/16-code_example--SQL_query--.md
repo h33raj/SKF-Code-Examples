@@ -1,7 +1,8 @@
-SQL query
+# SQL query
 -------
 
-**Example:**
+## Example:
+
 
     """
     Django supports almost most of the database backends.  
@@ -32,16 +33,12 @@ SQL query
         		self.address,
     		])
 
-    """
-    In order to add your model to django, you have to add the app in INSTALLED_APP
-    """
-
+    //In order to add your model to django, you have to add the app in INSTALLED_APP
     INSTALLED_APPS = [
-    	#...
+    	//...
     	'myapp',
-    	#...
+    	//...
 	]
-
 
 	"""
 	After adding the application, inorder to make the changes we need to make migrations
@@ -49,10 +46,8 @@ SQL query
 	"""
 
 	$ python manage.py makemigrations
-
 	$ python manage.py migrate
-
-	# Needs to be added
+	//Needs to be added
 
 	"""
 	Inserting data into the database - create, add and commit
@@ -71,7 +66,8 @@ SQL query
 	"""
 	Querying Records
 	"""
-	#Retrieve the user with username
+	
+	//Retrieve the user with username
 	instance = Publisher.objects.filter(name=name).all()
 	instance.address
 

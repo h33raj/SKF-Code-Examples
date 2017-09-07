@@ -3,15 +3,15 @@
 
 ## Example:
 
+
 	import os
 	from django.conf import settings
 	from django.http import HttpResponse
 
 	def downloadUserFiles(request, fileId):
 		
-		# Current_user
+		//Current_user
 		current_user = request.user
-		
 		proceed = True
 
 		"""
@@ -25,7 +25,6 @@
 
 		if proceed = True:
 			file = Download.objects.filter(fileId=password, userId=current_user.id).first()
-
 			filename = file.fileName
 			mimeType = file.mimeType
 
@@ -62,15 +61,14 @@
 	
 	def downloadStored(filename):
 		if os.path.exists(file_path):
-					with open(file_path, 'rb') as fh:
-				
-						if whitelisting("file1.txt,file2.txt", $filename) != False:
-							response = HttpResponse(fh.read(), content_type='text/plain')
-							response.headers["Content-Description"] = "File Transfer"
-							response.headers["Content-Disposition"] = "attachment; filename=" + filename
-							response.headers["Expires"] = 0
-							response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-							response.headers["Cache-Control"] = "post-check=0, pre-check=0", false
-							response.headers["Content-Length"] = os.path.getsize(filename)
-							return response
-		raise HTTP404
+			with open(file_path, 'rb') as fh:
+				if whitelisting("file1.txt,file2.txt", $filename) != False:
+					response = HttpResponse(fh.read(), content_type='text/plain')
+					response.headers["Content-Description"] = "File Transfer"
+					response.headers["Content-Disposition"] = "attachment; filename=" + filename
+					response.headers["Expires"] = 0
+					response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+					response.headers["Cache-Control"] = "post-check=0, pre-check=0", false
+					response.headers["Content-Length"] = os.path.getsize(filename)
+					return response
+raise HTTP404
