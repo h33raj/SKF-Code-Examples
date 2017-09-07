@@ -6,7 +6,7 @@
 
     """
     Define the whitelist pattern and validation type and input parameter like:
-    identity("page1,page2,etc", "alphanummeric", $_GET['page'], "3")
+    identity("page1,page2,etc", "alphanumeric", $_GET['page'], "3")
     """
 
     def identity(request, whiteListPattern, validationType, inputParameter, countLevel):
@@ -49,3 +49,7 @@
             current_user = request.user
 
             data = Table.objects.filter(id=current_user.id, page=inputParameter).first()
+
+        else: 
+
+            return False
