@@ -70,13 +70,13 @@
     if counthits > count:
 
       # Log that the user had sufficient privileges:
-      setLog(session['id'], "User was privileged!", "SUCCESS", str(datetime.utcnow()), privilege, "NULL")
+      setLog(session['id'], "User was privileged!", "SUCCESS", str(datetime.utcnow()), "NULL")
       return True
 
     else:
 
       # Log that the user had sufficient privileges:
-      setLog(session['id'], "User was not privileged!", "FAIL", str(datetime.utcnow()), privilege, "HIGH")
+      setLog(session['id'], "User was not privileged!", "FAIL", str(datetime.utcnow()), "HIGH")
 
       """
         Set counter; if counter hits 3, the user's session must be terminated.

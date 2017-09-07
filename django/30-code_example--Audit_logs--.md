@@ -73,6 +73,16 @@
         },
     }
 
+    # Get Client IP
+
+    def get_client_ip(request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+
     # Example for logging error
     
     import logging
@@ -84,7 +94,7 @@
         ...
         if bad_mojo:
             # Log an error message
-            logger.error('Something went wrong!') 
+            logger.error('Something went wrong!' + get_client_ip(request)) 
 
 
     # Example for logging critical
@@ -98,4 +108,4 @@
         ...
         if security_violation:
             # Log an critical message
-            logger.critical('Security violation!')
+            logger.critical('Security violation!' + get_client_ip(request))

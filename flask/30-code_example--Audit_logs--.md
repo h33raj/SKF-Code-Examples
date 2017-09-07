@@ -12,50 +12,57 @@
     variable in order to keep track of his behavior.
     """
 
-REMARK Glenn: Please check the ASVS audit log section for what to log for example i miss the IP of the user. Also needs more comments about what the threat is like LOW, MEDIUM, HIGH. Also value should be message for example: User triggered search function
+    def setLog(userId, message, value, date, threat):
 
-        def setLog(userId, error, value, date, threat):
+        """
+        There are different threats : LOW, MEDIUM, HIGH
 
-            """
+        NULL if the operation is success
 
-            """
+        LOW threats are debugging logs or information logs when it goes wrong
+
+        MEDIUM threats can be failure of validation check, whitelisting checks failure
+
+        HIGH threats can even result in ban of users, security testing and maximum number of tries
+        """
             
-            #Take the client's IP address
-            ip = request.remote_addr
+        #Take the client's IP address
+        ip = request.remote_addr
 
-            #Save log file in a directory which has restrictions in place so no one can 
-            file = "restrictedfolder/logfile.txt"
-            f = open(file, 'w+')
+        #Save log file in a directory which has restrictions in place so no one can 
+        file = "restrictedfolder/logfile.txt"
+        f = open(file, 'w+')
             
-            #Notice how we user the userID instead of the actual username in order to prevent the integrity of these usernames
-            f.write(date + str(userId) + error + value + threat + "Ip : " + str(ip))
-            f.close()
+        #Notice how we user the userID instead of the actual username in order to prevent the integrity of these usernames
+        f.write(date + str(userId) + message + value + threat + "Ip : " + str(ip))
+        f.close()
 
 
-        class Counter(db.Model):
-            __tablename__ = "counter"
-            count = db.Column(db.Integer, nullable=False)
-            blocker = db.Column(db.Integer, nullable=False)
-            userID = db.Column('userID', db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+    class Counter(db.Model):
+        
+        __tablename__ = "counter"
+        count = db.Column(db.Integer, nullable=False)
+        blocker = db.Column(db.Integer, nullable=False)
+        userID = db.Column('userID', db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
 
-            def __init__(self, count, blocker, userID):
-                self.count = count 
-                self.blocker = blocker
-                self.userID = userID
+        def __init__(self, count, blocker, userID):
+            self.count = count 
+            self.blocker = blocker
+            self.userID = userID
 
-            def increment(self, count):
-                self.count+= count
-                self.blocker+= count
+        def increment(self, count):
+            self.count+= count
+            self.blocker+= count
 
-                if self.counter >= 3:
-                    setLog(self.userId,"The users session was terminated", "SUCCESS", datetime.utcnow(), "NULL")
-                    #After the counter has terminated a session he should be set to zero again
-                    self.count = 0
-                    #Log that the users sessions have been terminated
-                    logout()
+            if self.counter >= 3:
+                setLog(self.userId,"The users session was terminated", "SUCCESS", datetime.utcnow(), "NULL")
+                #After the counter has terminated a session he should be set to zero again
+                self.count = 0
+                #Log that the users sessions have been terminated
+                logout()
 
-                if self.blocker >= 12:
-                    #If the blocker was bigger than 12 it means the user has made three strikes and his account should blocked
-                    setLog(self.userId,"The users is denied access to system", "SUCCESS", datetime.utcnow(), "NULL")
-                    user = User.query.filter_by(id=self.userID).first()
-                    user.status = 'Blocked'
+            if self.blocker >= 12:
+                #If the blocker was bigger than 12 it means the user has made three strikes and his account should blocked
+                setLog(self.userId,"The users is denied access to system", "SUCCESS", datetime.utcnow(), "NULL")
+                user = User.query.filter_by(id=self.userID).first()
+                user.status = 'Blocked'

@@ -1,13 +1,21 @@
-input validation
+#input validation
 -------
 
-**Example:**
+## Example:
 
 	"""
 	This function is where you store all your input validation controls. 
 	It makes it easy to maintain whenever you want to apply changes for 
 	certain input validation roles and reduces the chance of mistakes in your regexes.
 	"""
+
+	def isFile(str):
+
+		# Check whether this Filename
+		if re.match("^[A-Za-z0-9.]*$", str):
+			return True
+		else:
+			return False
 
 	def isAlphanumeric(str):
 
@@ -51,30 +59,36 @@ input validation
 
 	    if type == alphanumeric:
 	    	# Set the audit log
-	    	setLog(session["id"], "Alphanumeric matched", "Success", str(datetime.utcnow()), session['privilege'])
+	    	setLog(session["id"], "Alphanumeric matched", "Success", str(datetime.utcnow()), "NULL")
 
 	    	return isAlphanumeric(input)
 
 	   	elif type == numeric:
 	   		# Set the audit log
-	   		setLog(session["id"], "Numeric matched", "Success", str(datetime.utcnow()), session['privilege'])
+	   		setLog(session["id"], "Numeric matched", "Success", str(datetime.utcnow()), "NULL")
 	   		return isDigit(input)
 
 	   	elif type == alpha:
 	   		# Set the audit log
-	   		setLog(session["id"], "Alphabet matched", "Success", str(datetime.utcnow()), session['privilege'])
+	   		setLog(session["id"], "Alphabet matched", "Success", str(datetime.utcnow()), "NULL")
 
 	   		return isAlpha(input)
 
 	   	elif type == bool:
 	   		# Set the audit log
-	   		setLog(session["id"], "Bool matched", "Success", str(datetime.utcnow()), session['privilege'])
+	   		setLog(session["id"], "Bool matched", "Success", str(datetime.utcnow()), "NULL")
 
 	   		return isBool(input)
 
+		elif type == filename:
+			# Set the audit log
+			setLog(session["id"], "Bool matched", "Success", str(datetime.utcnow()), "NULL")			
+
+			return isFile(input)	   		
+
 	   	else:
 	   		# Set the audit log
-	   		setLog(session["id"], "FAIL", str(datetime.utcnow()), session['privilege'])
+	   		setLog(session["id"], "FAIL", str(datetime.utcnow()), session['privilege'] , "MEDIUM")
 	    	
 	   		# Increment the counter
 	    	counter.increment(1)

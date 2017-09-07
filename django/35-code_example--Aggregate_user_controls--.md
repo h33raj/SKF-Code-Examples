@@ -44,6 +44,8 @@
         You could a CRON job in your mysql system in order to clean the Aggregate column within certain timeframes
         """
         
+        ip = get_client_ip(request)
+        
         current_user = request.user
 
         log = logging.getLogger(__name__)
